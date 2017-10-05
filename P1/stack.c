@@ -69,7 +69,7 @@ Stack * stack_push(Stack * s, const void *obj) {
 		return NULL;
 	s->items = aux;
 	s->size++;
-	s->items[top(s)] = obj;
+	s->items[top(s)] = s->copy_element_function(obj);
 	return s;
 }
 /**------------------------------------------------------------------
