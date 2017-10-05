@@ -7,46 +7,56 @@
 ################################################################################################
 LIBS = -lm -pthread
 CC = gcc
-CFLAGS = -g -Wall
+CFLAGS = -g -Wall -ansi -pedantic
 
 # $ make
 # $ make all
-all: p1 p2
+# 
+
+#all: p1 p2
+all: p1
+
 # $ make p1
-P1 = p1s1 p1s2
+
+#P1 = p1s1 p1s2
+P1 = p1s1
+
 p1: $(P1)
 # $ make p2
-P2 = p2s1 p1s2
-p2: $(P2)
+#P2 = p2s1 p2s2
+#p2: $(P2)
 
 ########################################################################
 # P1
 ########################################################################
-main.o: main.c header1.h header2.h
+main.o: main.c stack.h basic_types.h
 	$(CC) $(CFLAGS) -c $< -o $@
-src1.o: src1.c header1.h
+stack.o: stack.c stack.h basic_types.h
 	$(CC) $(CFLAGS) -c $< -o $@
-src2.o: src2.c header2.h
-	$(CC) $(CFLAGS) -c $< -o $@
+
+
+#src2.o: src2.c header2.h
+#	$(CC) $(CFLAGS) -c $< -o $@
 # $ make p1s1
-p1s1: main.o src1.o src2.o
+#p1s1: main.o src1.o src2.o
+p1s1: main.o stack.o
 	$(CC) $^ -Wall $(LIBS) -o $@
 # $ make p1s2
-p1s2: main.o src2.o
-	$(CC) $^ -Wall $(LIBS) -o $@
+#p1s2: main.o src2.o
+#	$(CC) $^ -Wall $(LIBS) -o $@
 ########################################################################
 # P2
 ########################################################################
-src3.o: src3.c header2.h
-	$(CC) $(CFLAGS) -c $< -o $@
-src4.o: src4.c header1.h header2.h
-	$(CC) $(CFLAGS) -c $< -o $@
+#src3.o: src3.c header2.h
+#	$(CC) $(CFLAGS) -c $< -o $@
+#src4.o: src4.c header1.h header2.h
+#	$(CC) $(CFLAGS) -c $< -o $@
 # $ make p2s1
-p2s1: src3.o src1.o
-	$(CC) $^ -Wall $(LIBS) -o $@
+#p2s1: src3.o src1.o
+#	$(CC) $^ -Wall $(LIBS) -o $@
 # $ make p2s2
-p2s2: src3.o src4.o src2.o
-	$(CC) $^ -Wall $(LIBS) -o $@
+#p2s2: src3.o src4.o src2.o
+#	$(CC) $^ -Wall $(LIBS) -o $@
 	
 ########################################################################
 # Information and Clean
@@ -54,11 +64,11 @@ p2s2: src3.o src4.o src2.o
 # $ make info
 info:
 	@echo
-	@echo "<Asignatura>, <Grado>"
+	@echo "<Autómatas y Lenguajes>, <Doble Grado>"
 	@echo "<Codigo de la entrega>"
 	@echo
 	@echo "Autores:"
-	@echo "	<Autor, Correo electronico>"
+	@echo "	<Javier Gómez Martínez, Correo electronico>"
 	@echo "	<Autor, Correo electronico>"
 	@echo
 	@echo "Ejecutables:"
