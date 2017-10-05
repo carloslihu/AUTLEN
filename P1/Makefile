@@ -33,13 +33,15 @@ main.o: main.c stack.h basic_types.h
 	$(CC) $(CFLAGS) -c $< -o $@
 stack.o: stack.c stack.h basic_types.h
 	$(CC) $(CFLAGS) -c $< -o $@
+generic_string.o: generic_string.h basic_types.h
+	$(CC) $(CFLAGS) -c $< -o $@	
 
 
 #src2.o: src2.c header2.h
 #	$(CC) $(CFLAGS) -c $< -o $@
 # $ make p1s1
 #p1s1: main.o src1.o src2.o
-p1s1: main.o stack.o
+p1s1: main.o stack.o generic_string.o
 	$(CC) $^ -Wall $(LIBS) -o $@
 # $ make p1s2
 #p1s2: main.o src2.o
