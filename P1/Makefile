@@ -33,7 +33,7 @@ main.o: main.c stack.h basic_types.h
 	$(CC) $(CFLAGS) -c $< -o $@
 stack.o: stack.c stack.h basic_types.h
 	$(CC) $(CFLAGS) -c $< -o $@
-generic_string.o: generic_string.h basic_types.h
+generic_string.o: generic_string.c generic_string.h basic_types.h
 	$(CC) $(CFLAGS) -c $< -o $@	
 
 
