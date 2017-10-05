@@ -2,7 +2,6 @@
 #define STACK_H
 
 #include "basic_types.h"
-#include <stdio.h>
 
 #define MAXSTACK 2024
 typedef struct _Stack Stack;
