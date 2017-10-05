@@ -1,5 +1,15 @@
 #include "stack.h"
 
+struct _Stack{
+	void* top;
+	void** items;
+
+	destroy_element_function_type   destroy_element_function;
+    copy_element_function_type      copy_element_function;
+    print_element_function_type     print_element_function;
+}
+
+
 /**------------------------------------------------------------------
 Inicializa la pila reservando memoria y almacenando los tres punteros a función pasados como parámetro (el primero para destruir elementos, el segundo para copiar elementos y el tercero para imprimir elementos). Salida: NULL si ha habido error o la pila si ha ido bien
 ------------------------------------------------------------------*/
