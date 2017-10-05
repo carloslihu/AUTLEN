@@ -1,5 +1,6 @@
 #include "stack.h"
 #include "generic_string.h"
+
 int main(int argc, char** argv)
 {
 	Stack * p_s_string1, * p_s_string2;
