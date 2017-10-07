@@ -1,0 +1,4 @@
+gcc -g -Wall -ansi -pedantic -c main.c -o main.o
+gcc -g -Wall -ansi -pedantic -c stack.c -o stack.o
+gcc -g -Wall -ansi -pedantic -c generic_string.c -o generic_string.o	
+gcc main.o stack.o generic_string.o -Wall -lm -pthread -o p1s1
