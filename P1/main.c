@@ -21,7 +21,11 @@ int main(int argc, char** argv) {
         stack_push(p_s_string2, aux_string);
         destroy_p_string(aux_string);
     }
+    printf("stack 2:\n");
     stack_print(stdout, p_s_string2);
+    printf("size of the stack: %d\nis stack2 empty? : %d\nis stack2 full? : %d\n", stack_size(p_s_string2),stack_isEmpty(p_s_string2),stack_isFull(p_s_string2));
+    printf("\nstack1: (should not print any element)\n");
+    printf("size of the stack: %d\nis stack1 empty? : %d\nis stack1 full? : %d\n", stack_size(p_s_string1),stack_isEmpty(p_s_string1),stack_isFull(p_s_string1));
     stack_destroy(p_s_string2);
     stack_destroy(p_s_string1);
     return 0;

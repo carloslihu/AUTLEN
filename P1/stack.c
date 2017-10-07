@@ -54,6 +54,7 @@ void stack_destroy(Stack * s) {
     if (s->items != NULL)
         for (i = top(s); i >= 0; i--)
             s->destroy_element_function(s->items[i]);
+    free(s->items);
     free(s);
 }
 
@@ -61,11 +62,19 @@ void stack_destroy(Stack * s) {
 Inserta un elemento en la pila. Entrada: un elemento y la pila donde insertarlo. Salida: NULL si no logra insertarlo o la pila resultante si lo logra
 ------------------------------------------------------------------*/
 Stack * stack_push(Stack * s, const void *obj) {
+	void** aux;
     if (s == NULL || obj == NULL)
         return NULL;
     /*obtenemos pila mas grande*/
     s->size++;
-    s->items = (void**) realloc(s->items, s->size * sizeof (void*));
+    aux = (void**) realloc(s->items, s->size * sizeof (void*));
+    if(aux == NULL){
+    	/*if the realloc call did not work (returning NULL) we don't just lose all the stack. we act as if no push was made
+    	the user of this implementation of a stack is responsible of checking the return value of this function to detect any unexpected error.*/
+    	s->size--;
+    	return NULL;
+    }
+    s->items = aux;
     s->items[top(s)] = s->copy_element_function(obj);
     return s;
 }
