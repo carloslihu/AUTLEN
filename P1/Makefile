@@ -8,6 +8,7 @@
 LIBS = -lm -pthread
 CC = gcc
 CFLAGS = -g -Wall -ansi -pedantic
+EXE=$(P1)
 
 # $ make
 # $ make all
@@ -98,6 +99,9 @@ doxygen:
 	@rm -fr Doxyfile latex html
 	@doxygen -g
 	@doxygen Doxyfile
+
+valgrind:
+	@valgrind --leak-check=full ./$(EXE)
 ########################################################################
 # Installation
 ########################################################################

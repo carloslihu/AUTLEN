@@ -6,11 +6,11 @@
 #include <string.h>
 
 typedef enum {
-    ERROR = 0, OK = 1
+	ERROR = 0, OK = 1
 } Status;
 
 typedef enum {
-    FALSE = 0, TRUE = 1
+	FALSE = 0, TRUE = 1
 } Bool;
 
-#endif    
+#endif

@@ -5,8 +5,6 @@
 
 #include "stack.h"
 
-#define REALLOC_FROM_TOP 2
-
 struct _Stack {
     int size;
     void** items;
@@ -62,17 +60,17 @@ void stack_destroy(Stack * s) {
 Inserta un elemento en la pila. Entrada: un elemento y la pila donde insertarlo. Salida: NULL si no logra insertarlo o la pila resultante si lo logra
 ------------------------------------------------------------------*/
 Stack * stack_push(Stack * s, const void *obj) {
-	void** aux;
-    if (s == NULL || obj == NULL)
+    void** aux;
+    if (s == NULL || obj == NULL || s->size < 0)
         return NULL;
     /*obtenemos pila mas grande*/
     s->size++;
     aux = (void**) realloc(s->items, s->size * sizeof (void*));
-    if(aux == NULL){
-    	/*if the realloc call did not work (returning NULL) we don't just lose all the stack. we act as if no push was made
-    	the user of this implementation of a stack is responsible of checking the return value of this function to detect any unexpected error.*/
-    	s->size--;
-    	return NULL;
+    if (aux == NULL) {
+        /*if the realloc call did not work (returning NULL) we don't just lose all the stack. we act as if no push was made
+        the user of this implementation of a stack is responsible of checking the return value of this function to detect any unexpected error.*/
+        s->size--;
+        return NULL;
     }
     s->items = aux;
     s->items[top(s)] = s->copy_element_function(obj);
@@ -84,11 +82,17 @@ Extrae un elemento en la pila. Entrada: la pila de donde extraerlo. Salida: NULL
 ------------------------------------------------------------------*/
 void * stack_pop(Stack *s) {
     void* obj;
-    if (s == NULL || s->size <= 0)
+    void** aux;
+    if (s == NULL || s->size <= 0 || s->items == NULL)
         return NULL;
     obj = s->items[top(s)];
     s->size--;
-    s->items = (void**) realloc(s->items, s->size * sizeof (void*));
+    aux = (void**) realloc(s->items, s->size * sizeof (void*));
+    if (aux == NULL && s->size > 0) {
+        s->size++;
+        return NULL;
+    }
+    s->items = aux;
     return obj;
 }
 
@@ -97,7 +101,7 @@ Copia un elemento (reservando memoria) sin modificar el top de la pila. Entrada:
 ------------------------------------------------------------------*/
 void * stack_top(const Stack *s) {
     void* obj;
-    if (s == NULL || s->size == 0)
+    if (s == NULL || s->size <= 0 || s->items == NULL)
         return NULL;
     obj = s->copy_element_function((const void*) s->items[top(s)]); /*README I'm assuming that on error, this will return NULL*/
     return obj;
@@ -107,7 +111,7 @@ void * stack_top(const Stack *s) {
 Comprueba si la pila esta vacia. Entrada: pila. Salida: TRUE si está vacia o FALSE si no lo esta
 ------------------------------------------------------------------*/
 Bool stack_isEmpty(const Stack *s) {
-    if (s == NULL || s->size <= 0)
+    if (s == NULL || s->size <= 0 || s->items == NULL)
         return TRUE;
     return FALSE;
 }
@@ -125,7 +129,7 @@ Imprime toda la pila, colocando el elemento en la cima al principio de la impres
 int stack_print(FILE* fp, const Stack* s) {
     int printedChars;
     int i;
-    if (fp == NULL || s == NULL)
+    if (fp == NULL || s == NULL || s->items == NULL || s->size <= 0)
         return 0;
     for (i = top(s), printedChars = 0; i >= 0; i--) {
         printedChars += s->print_element_function(fp, s->items[i]);
@@ -134,7 +138,7 @@ int stack_print(FILE* fp, const Stack* s) {
 }
 
 int stack_size(const Stack* s) {
-    if (s == NULL)
-        return 0;
+    if (s == NULL || s->size < 0)
+        return -1;
     return s->size;
 }
