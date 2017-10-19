@@ -1,4 +1,4 @@
-#include "configuracionApnd.h"
+#include "configuracion_apnd.h"
 
 struct _conf{
 	

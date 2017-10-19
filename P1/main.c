@@ -47,8 +47,7 @@ int main(int argc, char ** argv)
 	configuracionApElimina(p_cap2);
 	fprintf(stdout, "\nCONFIGURACION NO DETERMINISTA\n");
 	configuracionApndPrint(stdout, capnd);
-	fprintf(stdout, "\nCONFIGURACION NO DETERMINISTA, IMPRESA ELEMENTO A
-	        ELEMENTO\n");
+	fprintf(stdout, "\nCONFIGURACION NO DETERMINISTA, IMPRESA ELEMENTO A ELEMENTO\n");
 	while ( configuracionApndIsEmpty(capnd) != 1 )
 	{
 		p_cap_aux = configuracionApndExtract(capnd);

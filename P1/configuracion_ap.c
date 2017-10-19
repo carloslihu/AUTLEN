@@ -1,3 +1,4 @@
+#include "configuracion_ap.h"
 /* Se crea una configuración reservando memoria nueva para ella y para copiar
 todas las componentes que se proporcionan como argumento */
 ConfiguracionAp * configuracionApNueva( Estado * estado, Stack * pila, Palabra *cadena){

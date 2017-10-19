@@ -9,10 +9,11 @@ LIBS = -lm -pthread
 CC = gcc
 CFLAGS = -g -Wall -ansi -pedantic
 EXE=$(P1)
-
+NAMES=basic_types stack generic_string palabra estado dynamic_node list configuracion_ap configuracion_apnd
+DEPS=$(patsubst %,%.h,$(NAMES))
+OBJ=$(patsubst %,%.o,$(NAMES))
 # $ make
 # $ make all
-# 
 
 #all: p1 p2
 all: p1
@@ -20,7 +21,7 @@ all: p1
 # $ make p1
 
 #P1 = p1s1 p1s2
-P1 = p1s1
+P1 = p1s2
 
 p1: $(P1)
 # $ make p2
@@ -30,23 +31,26 @@ p1: $(P1)
 ########################################################################
 # P1
 ########################################################################
-main.o: main.c stack.h basic_types.h
+#main.o: main.c stack.h basic_types.h
+#	$(CC) $(CFLAGS) -c $< -o $@
+#stack.o: stack.c stack.h basic_types.h
+#	$(CC) $(CFLAGS) -c $< -o $@
+#generic_string.o: generic_string.c generic_string.h basic_types.h
+#	$(CC) $(CFLAGS) -c $< -o $@	
+%.o: %.c $(DEPS)
 	$(CC) $(CFLAGS) -c $< -o $@
-stack.o: stack.c stack.h basic_types.h
-	$(CC) $(CFLAGS) -c $< -o $@
-generic_string.o: generic_string.c generic_string.h basic_types.h
-	$(CC) $(CFLAGS) -c $< -o $@	
 
 
 #src2.o: src2.c header2.h
 #	$(CC) $(CFLAGS) -c $< -o $@
 # $ make p1s1
 #p1s1: main.o src1.o src2.o
-p1s1: main.o stack.o generic_string.o
-	$(CC) $^ -Wall $(LIBS) -o $@
-# $ make p1s2
-#p1s2: main.o src2.o
+#p1s1: main.o stack.o generic_string.o
 #	$(CC) $^ -Wall $(LIBS) -o $@
+
+# $ make p1s2
+p1s2: main.o $(OBJ)
+	$(CC) $^ -Wall $(LIBS) -o $@
 ########################################################################
 # P2
 ########################################################################
