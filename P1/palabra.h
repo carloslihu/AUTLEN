@@ -1,5 +1,7 @@
 typedef struct _Palabra Palabra;
 
+#define PALABRA_CMP_ERROR -999
+
 /* Crea una palabra nueva */
 Palabra * palabraNueva();
 
