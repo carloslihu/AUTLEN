@@ -6,17 +6,17 @@
 #define MAXSTACK 2024
 typedef struct _Stack Stack;
 
-/* Tipos de los punteros a función soportados por la pila */
+/* Tipos de los punteros a funcion soportados por la pila */
 typedef void (*destroy_element_function_type)(void*);
 typedef void (*(*copy_element_function_type)(const void*));
 typedef int (*print_element_function_type)(FILE *, const void*);
 
 /**------------------------------------------------------------------
-Inicializa la pila reservando memoria y almacenando los tres punteros a función pasados como parámetro
+Inicializa la pila reservando memoria y almacenando los tres punteros a funcion pasados como parametro
 (el primero para destruir elementos, el segundo para copiar elementos y el tercero para imprimir elementos).
 Salida: NULL si ha habido error o la pila si ha ido bien
 ------------------------------------------------------------------*/
-Stack * stack_ini(destroy_element_function_type f1, copy_element_function_type f2, print_element_function_type f3);
+Stack * stack_ini(destroy_element_function_type f1, copy_element_function_type f2, print_element_function_type f3, cmp_element_function_type f4);
 /**------------------------------------------------------------------
 Elimina la pila
 Entrada: la pila que se va a eliminar
@@ -31,7 +31,7 @@ Stack * stack_push(Stack *, const void *);
 /**------------------------------------------------------------------
 Extrae un elemento en la pila.
 Entrada: la pila de donde extraerlo.
-Salida: NULL si no logra extraerlo o el elemento extraido si lo logra. Nótese que la pila quedará modificada
+Salida: NULL si no logra extraerlo o el elemento extraido si lo logra. Notese que la pila quedara modificada
 ------------------------------------------------------------------*/
 void * stack_pop(Stack *);
 /**------------------------------------------------------------------
@@ -43,26 +43,26 @@ void * stack_top(const Stack *);
 /**------------------------------------------------------------------
 Comprueba si la pila esta vacia.
 Entrada: pila.
-Salida: TRUE si está vacia o FALSE si no lo esta
+Salida: TRUE si esta vacia o FALSE si no lo esta
 ------------------------------------------------------------------*/
 Bool stack_isEmpty(const Stack *);
 /**------------------------------------------------------------------
 Comprueba si la pila esta llena.
 Entrada: pila.
-Salida: TRUE si está llena o FALSE si no lo esta
+Salida: TRUE si esta llena o FALSE si no lo esta
 ------------------------------------------------------------------*/
 Bool stack_isFull(const Stack *);
 /**------------------------------------------------------------------
-Imprime toda la pila, colocando el elemento en la cima al principio de la impresión (y un elemento por línea).
+Imprime toda la pila, colocando el elemento en la cima al principio de la impresion (y un elemento por linea).
 Entrada: pila y fichero donde imprimirla.
-Salida: Devuelve el número de caracteres escritos.
+Salida: Devuelve el numero de caracteres escritos.
 ------------------------------------------------------------------*/
 int stack_print(FILE*, const Stack*);
 
 /**------------------------------------------------------------------
-Tamaño​ ​ de​ ​ la​ ​ pila
-Entrada:​ ​ pila.
-Salida:​ ​ Devuelve​ ​ el​ ​ número​ ​ de​ ​ elementos​ ​ de​ ​ la​ ​ pila​ ​ (0​ ​ si​ ​ está​ ​ vacío,​ ​ -1​ ​ si​ ​ hay algún​ ​ error)
+Tamano  de  la  pila
+Entrada:  pila.
+Salida:  Devuelve  el  numero  de  elementos  de  la  pila  (0  si  esta  vacio,  -1  si  hay algun  error)
 ------------------------------------------------------------------*/
 int stack_size(const Stack* );
 
