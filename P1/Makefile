@@ -9,8 +9,8 @@ LIBS = -lm -pthread
 CC = gcc
 CFLAGS = -g -Wall -ansi -pedantic
 EXE=$(P1)
-NAMES=basic_types stack generic_string palabra estado dynamic_node list configuracion_ap configuracion_apnd
-DEPS=$(patsubst %,%.h,$(NAMES))
+NAMES=stack generic_string palabra estado dynamic_node list configuracion_ap configuracion_apnd
+DEPS=$(patsubst %,%.h,$(NAMES)) basic_types.h generic_collections_types.h
 OBJ=$(patsubst %,%.o,$(NAMES))
 # $ make
 # $ make all

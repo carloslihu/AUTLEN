@@ -1,8 +1,13 @@
+#ifndef ESTADO_H
+#define	ESTADO_H
+
 #define INICIAL 0
 #define FINAL 1
 #define INICIAL_Y_FINAL 2
 #define NORMAL 3
 typedef struct _Estado Estado;
+
+#include "basic_types.h"
 
 /* Reserva memoria nueva para el estado y para la cadena de su nombre, crea un
 estado con las dos componentes que se le proporcionan como argumento */
@@ -30,3 +35,4 @@ int estadoCompara(Estado * p_s1, Estado * p_s2);
 
 /* Se crea una copia en memoria nueva del estado proporcionado como argumento */
 Estado * estado_copy(Estado * p_s);
+#endif

@@ -2,14 +2,10 @@
 #define STACK_H
 
 #include "basic_types.h"
-
+#include "generic_collections_types.h"
 #define MAXSTACK 2024
 typedef struct _Stack Stack;
 
-/* Tipos de los punteros a funcion soportados por la pila */
-typedef void (*destroy_element_function_type)(void*);
-typedef void (*(*copy_element_function_type)(const void*));
-typedef int (*print_element_function_type)(FILE *, const void*);
 
 /**------------------------------------------------------------------
 Inicializa la pila reservando memoria y almacenando los tres punteros a funcion pasados como parametro

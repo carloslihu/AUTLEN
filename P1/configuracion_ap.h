@@ -1,3 +1,9 @@
+#ifndef CONFIGURACION_AP_H
+#define CONFIGURACION_AP_H
+#include "basic_types.h"
+#include "estado.h"
+#include "stack.h"
+#include "palabra.h"
 typedef struct _ConfiguracionAp ConfiguracionAp;
 
 /* Se crea una configuración reservando memoria nueva para ella y para copiar
@@ -18,3 +24,5 @@ valor negativo, 0 o positivo en función de la comparación de sus componentes e
 este orden: estados, pilas, cadenas. En el caso de que no sean iguales, devuelve
 el valor que devuelva la comparación de la primera que sea distinta*/
 int configuracionCompara( ConfiguracionAp * p_cap1, ConfiguracionAp * p_cap2);
+
+#endif

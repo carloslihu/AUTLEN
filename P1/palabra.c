@@ -1,6 +1,6 @@
 #include "palabra.h"
 
-struct _Palabra{
+struct _Palabra {
 	char** symbols;
 	int size;
 };
@@ -30,22 +30,23 @@ Palabra* copySymbols(Palabra** dest, Palabra* src){
 */
 
 /* Crea una palabra nueva */
-Palabra * palabraNueva(){
+Palabra * palabraNueva() {
 	Palabra* output;
 	output = (Palabra*)malloc(sizeof(struct _Palabra));
-	if(output == NULL)
+	if (output == NULL)
 		return NULL;
 	output->size = 0;
 	output->symbols = NULL;
+	return output;
 }
 
 /* Libera la memoria asociada con la palabra */
-void palabraElimina(Palabra * p_p){
+void palabraElimina(Palabra * p_p) {
 	int i;
-	if(p_p == NULL)
+	if (p_p == NULL)
 		return;
-	if(p_p->symbols != NULL){
-		for(i=0;i<p_p->size;i++){
+	if (p_p->symbols != NULL) {
+		for (i = 0; i < p_p->size; i++) {
 			free(p_p->symbols[i]);
 		}
 		free(p_p->symbols);
@@ -54,41 +55,42 @@ void palabraElimina(Palabra * p_p){
 }
 
 /* Muestra por el FILE * la palabra */
-void palabraImprime(FILE * fd, Palabra * p_p){
+void palabraImprime(FILE * fd, Palabra * p_p) {
 	int i;
-	if(p_p == NULL || p_p->symbols == NULL)
+	if (p_p == NULL || p_p->symbols == NULL)
 		return;
 	fprintf(fd, "[(%d)", p_p->size);
-	for(i=0;i<p_p->size;i++)
+	for (i = 0; i < p_p->size; i++)
 		fprintf(fd, " %s", p_p->symbols[i]);
-	fprintf(fd,"]");
+	fprintf(fd, "]");
 }
 
 /* Inserta una letra (que es un string - char * - ) en la palabra proporcionada
 como argumento (modificándola, por tanto) y devuelve la palabra resultante. Para
 ello debe hacer una copia en memoria nueva para la nueva letra */
-Palabra * palabraInsertaLetra(Palabra * p_p, char * letra){
+Palabra * palabraInsertaLetra(Palabra * p_p, char * letra) {
 	Palabra* output;
-	if(p_p == NULL || letra == NULL)
+	int i;
+	if (p_p == NULL || letra == NULL)
 		return NULL;
 
 	output = palabraNueva();
-	if(output == NULL)
+	if (output == NULL)
 		return NULL;
 
 	output->size = p_p->size + 1;
 
-	for(i=0;i<p_p->size;i++){
-		output->symbols[i] = calloc(strlen(p_p->symbols[i])+1, sizeof(char));
-		if(output->symbols[i] == NULL){/*on calloc error, we free all calloc'd symbols[i], free the output and return*/
-			output->size = i-1;/*i-1 because the i-th element failed on calloc, thus is NULL, no need to be freed*/
+	for (i = 0; i < p_p->size; i++) {
+		output->symbols[i] = calloc(strlen(p_p->symbols[i]) + 1, sizeof(char));
+		if (output->symbols[i] == NULL) { /*on calloc error, we free all calloc'd symbols[i], free the output and return*/
+			output->size = i - 1; /*i-1 because the i-th element failed on calloc, thus is NULL, no need to be freed*/
 			palabraElimina(output);/*this frees the rest of the structure for us*/
 		}
 		strcpy(output->symbols[i], p_p->symbols[i]);
 	}
-	output->symbols[output->size-1] = malloc(strlen(letra)+1, sizeof(char));
-	if(output->symbols[output->size-1] == NULL){
-		output->size = i-1;/*i-1 because the i-th element failed on malloc, thus is NULL, no need to be freed => less operations*/
+	output->symbols[output->size - 1] = calloc(strlen(letra) + 1, sizeof(char));
+	if (output->symbols[output->size - 1] == NULL) {
+		output->size = i - 1; /*i-1 because the i-th element failed on malloc, thus is NULL, no need to be freed => less operations*/
 		palabraElimina(output);/*this frees the rest of the structure for us*/
 	}
 	strcpy(output->symbols[i], letra);
@@ -97,36 +99,36 @@ Palabra * palabraInsertaLetra(Palabra * p_p, char * letra){
 }
 
 /* Devuelve la longitud de la palabra */
-int palabraTamano(Palabra * p_p){
-	if(p_p != NULL)
+int palabraTamano(Palabra * p_p) {
+	if (p_p != NULL)
 		return p_p->size;
 	return 0;
 }
 
 /* Hace en memoria nueva una copia de la palabra y la devuelve */
-Palabra * palabraCopia (Palabra * p_p){
+Palabra * palabraCopia (Palabra * p_p) {
 	Palabra* output;
-	int i,j;
+	int i, j;
 	char* aux;
 
-	if(p_p == NULL)
+	if (p_p == NULL)
 		return NULL;
 
 	output = palabraNueva();
-	if(output == NULL)
+	if (output == NULL)
 		return NULL;
 
-	output->symbols = (char**)calloc(p_p->size,sizeof(char*));
-	if(output->symbols == NULL){
+	output->symbols = (char**)calloc(p_p->size, sizeof(char*));
+	if (output->symbols == NULL) {
 		palabraElimina(output);
-		return NULL
+		return NULL;
 	}
 	output->size = p_p->size;
 
-	for(i=0;i<output->size;i++){
-		output->symbols[i] = calloc(strlen(p_p->symbols[i])+1, sizeof(char));
-		if(output->symbols[i] == NULL){/*on calloc error, we free all calloc'd symbols[i], free the output and return*/
-			output->size = i-1;/*i-1 because the i-th element failed on calloc, thus is NULL, no need to be freed*/
+	for (i = 0; i < output->size; i++) {
+		output->symbols[i] = calloc(strlen(p_p->symbols[i]) + 1, sizeof(char));
+		if (output->symbols[i] == NULL) { /*on calloc error, we free all calloc'd symbols[i], free the output and return*/
+			output->size = i - 1; /*i-1 because the i-th element failed on calloc, thus is NULL, no need to be freed*/
 			palabraElimina(output);/*this frees the rest of the structure for us*/
 		}
 		strcpy(output->symbols[i], p_p->symbols[i]);
@@ -139,21 +141,21 @@ Palabra * palabraCopia (Palabra * p_p){
 función de que todas las letras de la misma posición y de izquierda a derecha
 sean iguales. En el caso de que no lo sean, se devuelve el strcmp de la primera
 pareja de letras que no sean iguales */
-int palabraCompara( Palabra * p_p1, Palabra * p_p2){
+int palabraCompara( Palabra * p_p1, Palabra * p_p2) {
 	int i;
 	int retVal;
 
-	if(p_p1 == NULL || p_p2 == NULL)
+	if (p_p1 == NULL || p_p2 == NULL)
 		return PALABRA_CMP_ERROR;
 
-	if(p_p1->size != p_p2->size)
+	if (p_p1->size != p_p2->size)
 		return p_p1->size - p_p2->size;
 
-	for(i=0; i<p_p1->size; i++){
+	for (i = 0; i < p_p1->size; i++) {
 		retVal = strcmp(p_p1->symbols[i], p_p2->symbols[i]);
-		if(retVal != 0)
+		if (retVal != 0)
 			return retVal;
 	}
-	
+
 	return 0;
 }

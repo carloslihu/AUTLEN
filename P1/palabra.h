@@ -1,5 +1,8 @@
-typedef struct _Palabra Palabra;
+#ifndef PALABRA_H
+#define PALABRA_H
 
+#include "basic_types.h"
+typedef struct _Palabra Palabra;
 #define PALABRA_CMP_ERROR -999
 
 /* Crea una palabra nueva */
@@ -27,3 +30,5 @@ función de que todas las letras de la misma posición y de izquierda a derecha
 sean iguales. En el caso de que no lo sean, se devuelve el strcmp de la primera
 pareja de letras que no sean iguales */
 int palabraCompara( Palabra * p_p1, Palabra * p_p2);
+
+#endif

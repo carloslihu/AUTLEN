@@ -1,7 +1,6 @@
 #ifndef LIST_H
 #define	LIST_H
 
-#include <stdio.h>
 #include "basic_types.h"
 #include "generic_collections_types.h"
 

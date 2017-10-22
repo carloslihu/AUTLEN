@@ -1,3 +1,8 @@
+#ifndef CONFIGURACION_APND_H
+#define CONFIGURACION_APND_H
+
+#include "basic_types.h"
+typedef struct _ConfiguracionApnd ConfiguracionApnd;
 /* Inicializa una configuracion no determinista */
 ConfiguracionApnd * configuracionApndIni();
 /* Inserta una configuracion determinista en una no determinista. Se realiza una
@@ -18,3 +23,5 @@ orden */
 int configuracionApndPrint(FILE *fd, const ConfiguracionApnd* capnd);
 /* Se libera toda la memoria asociada con la configuracion no determinista */
 void configuracionApndDestroy( ConfiguracionApnd* capnd);
+
+#endif
