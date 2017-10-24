@@ -32,7 +32,13 @@ void configuracionApElimina( ConfiguracionAp * p_cap) {
 void configuracionApImprime( FILE * fd, ConfiguracionAp * p_cap) {
 	/*TODO ver formatos de impresion*/
 	if (fd && p_cap) {
-
+		fprintf(sd,"(");
+		estadoImprime(fd, p_cap->estado);
+		fprintf(sd," ");
+		stack_print(fd, p_cap->pila);
+		fprintf(sd," ");
+		palabraImprime(fd, p_cap->cadena);
+		fprintf(sd,")\n");
 	}
 }
 
