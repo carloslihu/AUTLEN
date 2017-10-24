@@ -12,6 +12,8 @@ ConfiguracionAp * configuracionApNueva( Estado * estado, Stack * pila, Palabra *
 	if (!estado || !pila || !cadena)
 		return NULL;
 	p_cap = (ConfiguracionAp*)malloc(sizeof(ConfiguracionAp));
+	if (p_cap == NULL)
+		return NULL;
 	p_cap->estado = estado;
 	p_cap->pila = pila;
 	p_cap->cadena = cadena;
@@ -62,6 +64,16 @@ el valor que devuelva la comparación de la primera que sea distinta*/
 int configuracionCompara( ConfiguracionAp * p_cap1, ConfiguracionAp * p_cap2) {
 	/*TODO aqui no se puede hacer control de errores*/
 	int cmp;
+	/*en el caso de que alguno sea NULL, tratamos el error asi
+		si ambos son NULL son iguales
+		y si alguno es distinto de NULL entonces es mayor que el que es NULL*/
+	if (p_cap1 == NULL && p_cap2 == NULL)
+		return 0;
+	else if (p_cap1 != NULL && p_cap2 == NULL)
+		return 1;
+	else if (p_cap1 == NULL && p_cap2 != NULL)
+		return -1;
+
 	if ((cmp = estadoCompara(p_cap1->estado, p_cap2->estado )) != 0)
 		return cmp;
 	/*TODO comparar pilas?*/

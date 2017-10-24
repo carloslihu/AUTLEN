@@ -2,6 +2,7 @@
 
 struct _ConfiguracionAp {
 	/*TODO meter lista?*/
+	List*p_caps;
 };
 /* Inicializa una configuracion no determinista */
 ConfiguracionApnd * configuracionApndIni() {

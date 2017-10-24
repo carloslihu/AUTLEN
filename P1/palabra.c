@@ -108,8 +108,7 @@ int palabraTamano(Palabra * p_p) {
 /* Hace en memoria nueva una copia de la palabra y la devuelve */
 Palabra * palabraCopia (Palabra * p_p) {
 	Palabra* output;
-	int i, j;
-	char* aux;
+	int i;
 
 	if (p_p == NULL)
 		return NULL;
@@ -144,9 +143,15 @@ pareja de letras que no sean iguales */
 int palabraCompara( Palabra * p_p1, Palabra * p_p2) {
 	int i;
 	int retVal;
-
-	if (p_p1 == NULL || p_p2 == NULL)
-		return PALABRA_CMP_ERROR;
+	/*en el caso de que alguno sea NULL, tratamos el error asi
+		si ambos son NULL son iguales
+		y si alguno es distinto de NULL entonces es mayor que el que es NULL*/
+	if (p_p1 == NULL && p_p2 == NULL)
+		return 0;
+	else if (p_p1 != NULL && p_p2 == NULL)
+		return 1;
+	else if (p_p1 == NULL && p_p2 != NULL)
+		return -1;
 
 	if (p_p1->size != p_p2->size)
 		return p_p1->size - p_p2->size;

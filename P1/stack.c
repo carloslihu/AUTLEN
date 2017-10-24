@@ -158,3 +158,38 @@ int stack_size(const Stack* s) {
         return -1;
     return s->size;
 }
+
+Stack* stack_copy(Stack* s) {
+    Stack* s2;
+    int i;
+    if (s == NULL) {
+        return NULL;
+    }
+    s2 = (Stack*) malloc(sizeof (Stack));
+    if (!s2)
+        return NULL;
+    s2->destroy_element_function = s->destroy_element_function;
+    s2->copy_element_function = s->copy_element_function;
+    s2->print_element_function = s->print_element_function;
+    s2->cmp_element_function = s->cmp_element_function;
+    s2->size = s->size;
+    s2->items = (void**)malloc(s2->size * sizeof(void*));
+    if (!s2->items) {
+        free(s2);
+        return NULL;
+    }
+    for (i = 0; i < s2->size; i++) {
+        s2->items[i] = s2->copy_element_function(s->items[i]);
+        if (!s2->items[i]) {
+            s2->size = i - 1;
+            stack_destroy(s2);
+            return NULL;
+        }
+    }
+
+    return s2;
+}
+
+int stack_compare() {
+
+}
