@@ -12,5 +12,5 @@ void* copy_p_string(const void* p_string) {
 }
 
 int print_p_string(FILE * fd, const void* p_string) {
-	return fprintf(fd, "(STRING) %s \n", (char*)p_string);
+	return fprintf(fd, "%s ", (char*)p_string);
 }

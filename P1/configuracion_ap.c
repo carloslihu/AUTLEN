@@ -32,15 +32,14 @@ void configuracionApElimina( ConfiguracionAp * p_cap) {
 
 /* Se muestra por pantalla la configuración */
 void configuracionApImprime( FILE * fd, ConfiguracionAp * p_cap) {
-	/*TODO ver formatos de impresion*/
 	if (fd && p_cap) {
-		fprintf(sd,"(");
+		fprintf(fd, "(");
 		estadoImprime(fd, p_cap->estado);
-		fprintf(sd," ");
+		fprintf(fd, " ");
 		stack_print(fd, p_cap->pila);
-		fprintf(sd," ");
+		fprintf(fd, " ");
 		palabraImprime(fd, p_cap->cadena);
-		fprintf(sd,")\n");
+		fprintf(fd, ")\n");
 	}
 }
 
@@ -51,8 +50,7 @@ ConfiguracionAp * configuracionApCopia( ConfiguracionAp * p_cap) {
 		return NULL;
 	p_cap2 = (ConfiguracionAp*)malloc(sizeof(ConfiguracionAp));
 	p_cap2->estado = estado_copy(p_cap->estado);
-	/*TODO copiar pila?*/
-	p_cap2->pila;
+	p_cap2->pila = stack_copy(p_cap->pila);
 	p_cap2->cadena = palabraCopia (p_cap->cadena);
 	return p_cap2;
 }
@@ -62,7 +60,6 @@ valor negativo, 0 o positivo en función de la comparación de sus componentes e
 este orden: estados, pilas, cadenas. En el caso de que no sean iguales, devuelve
 el valor que devuelva la comparación de la primera que sea distinta*/
 int configuracionCompara( ConfiguracionAp * p_cap1, ConfiguracionAp * p_cap2) {
-	/*TODO aqui no se puede hacer control de errores*/
 	int cmp;
 	/*en el caso de que alguno sea NULL, tratamos el error asi
 		si ambos son NULL son iguales
@@ -76,9 +73,8 @@ int configuracionCompara( ConfiguracionAp * p_cap1, ConfiguracionAp * p_cap2) {
 
 	if ((cmp = estadoCompara(p_cap1->estado, p_cap2->estado )) != 0)
 		return cmp;
-	/*TODO comparar pilas?*/
-	/*else if ((cmp = ) != 0)
-		return cmp;*/
+	else if ((cmp = stack_compare(p_cap1->pila, p_cap2->pila)) != 0)
+		return cmp;
 	else
 		return palabraCompara( p_cap1->cadena, p_cap2->cadena);
 

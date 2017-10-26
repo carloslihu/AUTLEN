@@ -4,7 +4,6 @@
 #include "basic_types.h"
 #include "generic_collections_types.h"
 
-
 typedef struct _List List;
 
 

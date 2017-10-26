@@ -63,4 +63,8 @@ Salida:  Devuelve  el  numero  de  elementos  de  la  pila  (0  si  esta  vacio,
 int stack_size(const Stack* );
 
 
+Stack* stack_copy(Stack* s);
+
+int stack_compare(Stack*s1, Stack*s2);
+
 #endif

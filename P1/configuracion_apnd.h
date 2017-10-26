@@ -2,6 +2,9 @@
 #define CONFIGURACION_APND_H
 
 #include "basic_types.h"
+#include "configuracion_ap.h"
+#include "generic_collections_types.h"
+#include "list.h"
 typedef struct _ConfiguracionApnd ConfiguracionApnd;
 /* Inicializa una configuracion no determinista */
 ConfiguracionApnd * configuracionApndIni();

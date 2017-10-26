@@ -77,6 +77,7 @@ Estado * estado_copy(Estado * p_s) {
 	if (!p_s)
 		return NULL;
 	p_s2 = (Estado*)malloc(sizeof(Estado));
+        p_s2->nombre=(char*)calloc(strlen(p_s->nombre)+1,sizeof(char));
 	strcpy(p_s2->nombre, p_s->nombre);
 	p_s2->tipo = p_s->tipo;
 	return p_s2;

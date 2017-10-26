@@ -69,33 +69,14 @@ void palabraImprime(FILE * fd, Palabra * p_p) {
 como argumento (modificándola, por tanto) y devuelve la palabra resultante. Para
 ello debe hacer una copia en memoria nueva para la nueva letra */
 Palabra * palabraInsertaLetra(Palabra * p_p, char * letra) {
-	Palabra* output;
-	int i;
 	if (p_p == NULL || letra == NULL)
 		return NULL;
 
-	output = palabraNueva();
-	if (output == NULL)
-		return NULL;
-
-	output->size = p_p->size + 1;
-
-	for (i = 0; i < p_p->size; i++) {
-		output->symbols[i] = calloc(strlen(p_p->symbols[i]) + 1, sizeof(char));
-		if (output->symbols[i] == NULL) { /*on calloc error, we free all calloc'd symbols[i], free the output and return*/
-			output->size = i - 1; /*i-1 because the i-th element failed on calloc, thus is NULL, no need to be freed*/
-			palabraElimina(output);/*this frees the rest of the structure for us*/
-		}
-		strcpy(output->symbols[i], p_p->symbols[i]);
-	}
-	output->symbols[output->size - 1] = calloc(strlen(letra) + 1, sizeof(char));
-	if (output->symbols[output->size - 1] == NULL) {
-		output->size = i - 1; /*i-1 because the i-th element failed on malloc, thus is NULL, no need to be freed => less operations*/
-		palabraElimina(output);/*this frees the rest of the structure for us*/
-	}
-	strcpy(output->symbols[i], letra);
-
-	return output;
+        p_p->size++;
+	p_p->symbols = (char**)realloc(p_p->symbols,sizeof(char)*p_p->size);
+        p_p->symbols[p_p->size-1] = malloc(sizeof(char)*(strlen(letra)+1));
+        strcpy(p_p->symbols[p_p->size-1],letra);
+        return p_p;
 }
 
 /* Devuelve la longitud de la palabra */
