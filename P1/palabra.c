@@ -5,30 +5,6 @@ struct _Palabra {
 	int size;
 };
 
-/*private function that copies the symbols from one Palabra to another*/
-/*
-Palabra* copySymbols(Palabra** dest, Palabra* src){
-	int i;
-
-	if(dest == NULL || src == NULL || dest->size < src->size)
-		return NULL;
-
-	for(i=0;i<dest->size;i++){
-		if(src->symbols[i] != NULL){
-			dest->symbols[i] = calloc(strlen(src->symbols[i])+1, sizeof(char));
-			if(dest->symbols[i] == NULL){
-				dest->size = i-1;
-				palabraElimina(dest);
-			}
-			strcpy(output->symbols, p_p->symbols);
-		} else {
-			free(dest->symbols[i]);
-			dest->symbols[i] = NULL;
-		}
-	}
-}
-*/
-
 /* Crea una palabra nueva */
 Palabra * palabraNueva() {
 	Palabra* output;
@@ -72,11 +48,11 @@ Palabra * palabraInsertaLetra(Palabra * p_p, char * letra) {
 	if (p_p == NULL || letra == NULL)
 		return NULL;
 
-        p_p->size++;
-	p_p->symbols = (char**)realloc(p_p->symbols,sizeof(char)*p_p->size);
-        p_p->symbols[p_p->size-1] = malloc(sizeof(char)*(strlen(letra)+1));
-        strcpy(p_p->symbols[p_p->size-1],letra);
-        return p_p;
+	p_p->size++;
+	p_p->symbols = (char**)realloc(p_p->symbols, sizeof(char*)*p_p->size);
+	p_p->symbols[p_p->size - 1] = (char*)malloc(sizeof(char) * (strlen(letra) + 1));
+	strcpy(p_p->symbols[p_p->size - 1], letra);
+	return p_p;
 }
 
 /* Devuelve la longitud de la palabra */

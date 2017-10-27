@@ -106,6 +106,9 @@ doxygen:
 
 valgrind:
 	@valgrind --leak-check=full ./$(EXE)
+
+zip:
+	zip -r 1401_JavierGomez_CarlosLi_P1.zip *.c *.h Makefile
 ########################################################################
 # Installation
 ########################################################################

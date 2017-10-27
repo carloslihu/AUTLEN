@@ -12,7 +12,7 @@ void dynamicNode_destroy( DynamicNode * pn, destroy_element_function_type f_d);
 DynamicNode * dynamicNode_getNext(const DynamicNode * pn);
 DynamicNode * dynamicNode_setNext(DynamicNode * pn, const DynamicNode * next);
 void * dynamicNode_getData(const DynamicNode * pn);
-DynamicNode * dynamicNode_setData(DynamicNode * pn,const void * data);
+DynamicNode * dynamicNode_setData(DynamicNode * pn, const void * data);
 int dynamicNode_print( FILE * fd, const DynamicNode * pn, print_element_function_type f_p);
 
 

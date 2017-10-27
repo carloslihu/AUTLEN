@@ -147,11 +147,11 @@ int stack_print(FILE* fp, const Stack* s) {
     /* David: Cual es el proposito de printedChars? A la hora de imprimir, es print_element_function quien se encarga por lo que
      * s->print_element_function(fp, s->items[i]) seria suficiente. Esta funcion devolveria siempre 0
      */
-    fprintf(fp,"<");
+    fprintf(fp, "<");
     for (i = top(s), printedChars = 0; i >= 0; i--) {
         printedChars += s->print_element_function(fp, s->items[i]);
     }
-    fprintf(fp,"> ");
+    fprintf(fp, "> ");
     return printedChars;
 }
 
@@ -193,7 +193,7 @@ Stack* stack_copy(Stack* s) {
 }
 
 int stack_compare(Stack*s1, Stack*s2) {
-    int cmp,i;
+    int cmp, i;
     if (s1 == NULL && s2 == NULL)
         return 0;
     else if (s1 != NULL && s2 == NULL)

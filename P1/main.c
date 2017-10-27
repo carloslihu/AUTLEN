@@ -18,11 +18,13 @@ int main(int argc, char ** argv)
 	Estado * estado;
 	Palabra * cadena;
 	capnd = configuracionApndIni ();
+
 	cadena = palabraNueva();
 	palabraInsertaLetra(cadena, "a1");
 	palabraInsertaLetra(cadena, "a2");
 	palabraInsertaLetra(cadena, "a3");
 	palabraInsertaLetra(cadena, "a4");
+
 	pila = stack_ini( destroy_p_string, copy_p_string,
 	                  print_p_string, (cmp_element_function_type)strcmp);
 	sprintf(texto, "z");
@@ -31,17 +33,23 @@ int main(int argc, char ** argv)
 	stack_push(pila, texto);
 	sprintf(texto, "b");
 	stack_push(pila, texto);
+
 	estado = estadoNuevo("q1", 2);
+
 	p_cap = configuracionApNueva(estado, pila, cadena);
 	p_cap2 = configuracionApCopia(p_cap);
+
 	configuracionApndInsert(capnd, p_cap);
 	configuracionApndInsert(capnd, p_cap2);
+
 	fprintf(stdout, "\nCONFIGURACION 1\n");
 	configuracionApImprime(stdout, p_cap);
+
 	configuracionApElimina(p_cap);
 	estadoElimina(estado);
 	stack_destroy(pila);
 	palabraElimina(cadena);
+
 	fprintf(stdout, "\nCONFIGURACION 2\n");
 	configuracionApImprime(stdout, p_cap2);
 	configuracionApElimina(p_cap2);

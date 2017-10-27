@@ -5,8 +5,8 @@
 
 
 struct _DynamicNode {
-    void* data;
-    struct _DynamicNode *next;
+	void* data;
+	struct _DynamicNode *next;
 };
 
 
@@ -27,7 +27,7 @@ void dynamicNode_destroy( DynamicNode * pn, destroy_element_function_type f_d)
 		f_d (pn->data);
 		free ( pn);
 	}
-	
+
 
 }
 
@@ -45,7 +45,7 @@ DynamicNode * dynamicNode_setNext(DynamicNode * pn, const DynamicNode * next)
 {
 	if ( pn != NULL )
 	{
-		pn->next=(DynamicNode*)next; 
+		pn->next = (DynamicNode*)next;
 		return pn;
 	}
 	return pn;
