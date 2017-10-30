@@ -19,15 +19,15 @@ Palabra * palabraNueva() {
 /* Libera la memoria asociada con la palabra */
 void palabraElimina(Palabra * p_p) {
 	int i;
-	if (p_p == NULL)
-		return;
-	if (p_p->symbols != NULL) {
-		for (i = 0; i < p_p->size; i++) {
-			free(p_p->symbols[i]);
+	if (p_p){
+		if (p_p->symbols != NULL) {
+			for (i = 0; i < p_p->size; i++) {
+				free(p_p->symbols[i]);
+			}
+			free(p_p->symbols);
 		}
-		free(p_p->symbols);
+		free(p_p);
 	}
-	free(p_p);
 }
 
 /* Muestra por el FILE * la palabra */
@@ -50,7 +50,13 @@ Palabra * palabraInsertaLetra(Palabra * p_p, char * letra) {
 
 	p_p->size++;
 	p_p->symbols = (char**)realloc(p_p->symbols, sizeof(char*)*p_p->size);
+	if(p_p->symbols==NULL){
+		return NULL;
+	}
 	p_p->symbols[p_p->size - 1] = (char*)malloc(sizeof(char) * (strlen(letra) + 1));
+	if(p_p->symbols[p_p->size - 1]==NULL){
+		return NULL;
+	}
 	strcpy(p_p->symbols[p_p->size - 1], letra);
 	return p_p;
 }

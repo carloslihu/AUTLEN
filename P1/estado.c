@@ -12,7 +12,13 @@ Estado * estadoNuevo(char * nombre, int tipo) {
     if (!nombre || tipo < 0)
         return NULL;
     p_s = (Estado*) malloc(sizeof (Estado));
+    if(p_s==NULL){
+    	return NULL;
+    }
     p_s->nombre = (char*) calloc(strlen(nombre) + 1, sizeof (char));
+    if(p_s->nombre==NULL){
+    	return NULL;
+    }
     strcpy(p_s->nombre, nombre);
     p_s->tipo = tipo;
     return p_s;
@@ -78,7 +84,13 @@ Estado * estado_copy(Estado * p_s) {
     if (!p_s)
         return NULL;
     p_s2 = (Estado*) malloc(sizeof (Estado));
+    if(p_s2 == NULL){
+    	return NULL;
+    }
     p_s2->nombre = (char*) calloc(strlen(p_s->nombre) + 1, sizeof (char));
+    if(p_s2->nombre == NULL){
+    	return NULL;
+    }
     strcpy(p_s2->nombre, p_s->nombre);
     p_s2->tipo = p_s->tipo;
     return p_s2;

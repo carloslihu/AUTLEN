@@ -62,9 +62,18 @@ Salida:  Devuelve  el  numero  de  elementos  de  la  pila  (0  si  esta  vacio,
 ------------------------------------------------------------------*/
 int stack_size(const Stack* );
 
-
+/**------------------------------------------------------------------
+Copia  la  pila
+Entrada:  pila.
+Salida:  Devuelve  una copia de la pila ,  NULL  si  hay algun  error)
+------------------------------------------------------------------*/
 Stack* stack_copy(Stack* s);
 
+/**------------------------------------------------------------------
+Copia  la  pila
+Entrada:  pila1 y pila2.
+Salida:  Devuelve  0 si son iguales, y distinto de 0 si no
+------------------------------------------------------------------*/
 int stack_compare(Stack*s1, Stack*s2);
 
 #endif
