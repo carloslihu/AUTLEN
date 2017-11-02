@@ -7,16 +7,79 @@ typedef struct{
 	int **cierre;
 } _Relacion;
 
-Relacion * relacionNueva(char * nombre, int num_elementos);
 /*
 Crea una nueva relación a la que se le da como nombre el proporcionado como argumento para un conjunto con el número de elementos que se prorpociona como argumento.
 Debe reservar memoria propia para todas las componentes que decidas utilizar en la relación.
 */
+Relacion * relacionNueva(char * nombre, int num_elementos){
+	Relacion* output;
+	int i;
+	/*control de errores*/
+	if(nombre == NULL || num_elementos <= 0)
+		return NULL;
+
+	/*reserva de memorias*/
+	output = (Relacion*)malloc(sizeof(struct _Relacion));
+	if(output == NULL)
+		return NULL;
+	output->nombre = (char*)malloc(sizeof(char)*(strlen(nombre)+1));
+	if(output->nombre == NULL){
+		free(output);
+		return NULL;
+	}
+	output->inicial = (int**)calloc(num_elementos,sizeof(int*));
+	if(output->inicial == NULL){
+		free(output->nombre);
+		free(output);
+		return NULL;
+	}
+	output->cierre = (int**)calloc(num_elementos,sizeof(int*));
+	if(output->inicial == NULL){
+		free(output->nombre);
+		free(output->inicial);
+		free(output);
+		return NULL;
+	}
+	for(i=0;i<num_elementos;i++){
+		output->inicial[i] = (int*)calloc(num_elementos, sizeof(int));
+		output->cierre[i] = (int*)calloc(num_elementos, sizeof(int));
+		if(output->cierre[i] == NULL || output->inicial[i] == NULL){
+			for(;i>=0;i--){
+				free(output->inicial[i]);
+				free(output->cierre[i]);
+			}
+			free(output->nombre);
+			free(output->inicial);
+			free(output->cierre);
+			free(output);
+			return NULL;
+		}
+	}
+	
+	/*introduccion de datos*/
+	output->num_elementos = num_elementos;
+	strcpy(output->nombre,nombre);
+
+	/*retorno*/
+	return output;
+}
 void relacionImprime(FILE * fd, Relacion * p_r);
 /*
 Muestra por el FILE * la relación. Puedes suponer el formato de salida utilizado en los ejemplos.
 */
-void relacionElimina(Relacion * p_r);
+void relacionElimina(Relacion * p_r){
+	int i;
+	if(p_r == NULL)
+		return;
+	for(i=0;i<p_r->num_elementos;i++){
+		free(p_r->inicial[i]);
+		free(p_r->cierre[i]);
+	}
+	free(p_r->inicial);
+	free(p_r->cierre);
+	free(p_r->nombre);
+	free(p_r);
+}
 /*
 Libera toda la memoria asociada con la relación.
 */
