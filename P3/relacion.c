@@ -87,7 +87,13 @@ Relacion * relacionCopia(Relacion * p_r1);
 /*
 Genera en memoria nueva una copia de la relación proporcionada como argumento y la devuelve.
 */
-Relacion * relacionInserta(Relacion * p_r, int i, int j);
+Relacion * relacionInserta(Relacion * p_r, int i, int j){
+	if(p_r == NULL || i >= p_r->num_elementos || j >= p_r->num_elementos)
+		return NULL;
+	p_r->inicial[i][j] = 1;
+	p_r->cierre[i][j] = 1;
+	return p_r;
+}
 /*
 Modifica la relación proporcionada como argumento para que tenga constancia de que el elemento i está relacionado con el j. 
 Se está suponiendo que los elementos están dispuestos en un orden precondebido y conocido por el usuario de la librería. 
@@ -96,6 +102,7 @@ Una vez modificada, la relación es también devuelta.
 int  relacionTamano(Relacion * p_r);
 /*
 Devuelve el cardinal del conjunto sobre el que está definida la relación.
+BY JAVI: en lugar de comparar las matrices, tenemos un flag de "modificado" que si llega al final de la funcion siendo false, entonces hemos encontrado la matriz
 */
 Relacion * relacionCierreTransitivo(Relacion * p_r);
 /*
