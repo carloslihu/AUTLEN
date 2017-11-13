@@ -6,7 +6,7 @@ int main(int argc, char ** argv)
 	Relacion * r1;
 	Relacion * r2;
 
-	int i=0;
+	int i=0, j=0;
 
 	r1 = relacionNueva("grafo1",8);
 
@@ -34,7 +34,20 @@ int main(int argc, char ** argv)
 
 	relacionImprime(stdout,r1);
 
-	
+	fprintf(stdout,"size of relation: %d\n",relacionTamano(r1));
+	fprintf(stdout,"prueba de relacionIJ:\n");
+	for(i=0;i<relacionTamano(r1);i++){
+		fprintf(stdout,"\n");
+		for(j=0;j<relacionTamano(r1);j++)
+			fprintf(stdout," %d",relacionIJ(r1,i,j));
+	}
+	fprintf(stdout,"\n\nprueba de relacionCierreIJ:\n");
+	for(i=0;i<relacionTamano(r1);i++){
+		fprintf(stdout,"\n");
+		for(j=0;j<relacionTamano(r1);j++)
+			fprintf(stdout," %d",relacionCierreIJ(r1,i,j));
+	}
+	fprintf(stdout,"\n");
 
 	relacionElimina(r1);
 	relacionElimina(r2);
