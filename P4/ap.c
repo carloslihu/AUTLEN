@@ -4,20 +4,25 @@ struct _transicion{
     char * nombre_estado_i;
     char * nombre_estado_f;
     char * nombre_simbolo_entrada;
+    Palabra* accion;
 } ;
 
 struct _AP{
-	char* nombre;
-	List * sigma;
-	List * gamma;
-	List * estados;
-	Transicion * transicion;
+	char* nombre;/*nombre del automata*/
+	List * sigma;/*alfabeto de la entrada*/
+	List * gamma;/*alfabeto de la pila*/
+	List * estados;/*lista de los posibles estados del automata*/
+	List * transiciones/*lista de transiciones*/
+	Estado * estadoInicial;/*estado en el que comienza el automata*/
+	Palabra * cadenaEntrada;
+	ConfiguracionApnd * situaciones;/*lista de configuraciones actuales del automata*/
+	//Transicion * transicion;
 	//quiza algo para transicones lambda
-	Palabra * cadena;
-	List* situacionesIniciales;
-
 };
 
+/**
+ *
+*/
 AP * APNuevo( char * nombre, int num_estados, int num_simbolos_entrada, int num_simbolos_pila ){
 
 }
@@ -39,8 +44,27 @@ AP * APInsertaTransicion(AP * p_ap,
                          char * nombre_simbolo_entrada,
                          Palabra * accion){ }
 
+/**
+ * @brief insertar una letra en la cadena de entrada
+ */
 AP * APInsertaLetra(AP * p_ap, char * letra){ }
+/**
+ * @brief calcula las relaciones instantaneas. al iniciar el automata, genera transiciones instantaneas que son composicion de otras transiciones instantaneas
+ */
 AP * APCierraLTransicion (AP * p_ap){ }
+/**
+ * genera la configuracion_apnd que contiene el estado inicial y los estados a los que se puede llegar mediante el inicial a traves de transiciones instantaneas
+ */
 AP * APInicializaEstado (AP * p_ap){ }
+/**
+ * un paso del procesamiento de la entrada: según una transicion posible de hacer y a partir de una configuracion_ap, una entrada y una pila,
+ * genera nuevas configuracion_ap consumiendo simbolo de entrada, modificando la pila y cambiando el estado de la nueva con respecto de la antigua
+ * (todas las modificaciones se reflejan en la nueva configuracion y no en la configuracion antigua)
+ * a partir de una configuracion A, crea una copia B y en esta B realiza las modificaciones que haría el automata si hiciera esa transicion
+ */
 int APTransita(AP * p_ap){ }
+/**
+ * recorre la lista de configuraciones_ap (situaciones) y para cada una de ellas, llama a APTransita. si alcanza un estado final con la entrada vacia, termina.
+ * Si consume toda la cadena de entrada y no esta en un estado final, termina con error.
+ */
 int APProcesaEntrada(FILE *fd, AP * p_ap){ }
