@@ -14,11 +14,13 @@ int main(int argc, char ** argv)
 	ap = APNuevo("enunciado", 3, 2, 2);
 
 	/* SE INSERTAN ALFABETOS DE ENTRADA, PILA Y ESTADOS */
-
+	/*Sigma*/
 	APInsertaSimboloAlfabetoEntrada(ap, "a");
 	APInsertaSimboloAlfabetoEntrada(ap, "b");
+	/*Gamma*/
 	APInsertaSimboloAlfabetoPila(ap, "a");
 	APInsertaSimboloAlfabetoPila(ap, SIMBOLO_INICIO_PILA);
+	/*Q*/
 	APInsertaEstado(ap, "q0", INICIAL);
 	APInsertaEstado(ap, "q1", NORMAL);
 	APInsertaEstado(ap, "q2", FINAL);

@@ -1,3 +1,8 @@
+#ifndef AP_H
+#define AP_H
+
+#define SIMBOLO_INICIO_PILA "Z"
+
 AP * APNuevo( char * nombre,
               int num_estados,
               int num_simbolos_entrada,
@@ -25,3 +30,5 @@ AP * APCierraLTransicion (AP * p_ap);
 AP * APInicializaEstado (AP * p_ap);
 int APTransita(AP * p_ap);
 int APProcesaEntrada(FILE *fd, AP * p_ap);
+
+#endif
