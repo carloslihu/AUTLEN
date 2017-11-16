@@ -1,7 +1,26 @@
-AP * APNuevo( char * nombre,
-              int num_estados,
-              int num_simbolos_entrada,
-              int num_simbolos_pila ){ }
+
+struct _transicion{
+	char * nombre_simbolo_pila;
+    char * nombre_estado_i;
+    char * nombre_estado_f;
+    char * nombre_simbolo_entrada;
+} ;
+
+struct _AP{
+	char* nombre;
+	List * sigma;
+	List * gamma;
+	List * estados;
+	Transicion * transicion;
+	//quiza algo para transicones lambda
+	Palabra * cadena;
+	List* situacionesIniciales;
+
+};
+
+AP * APNuevo( char * nombre, int num_estados, int num_simbolos_entrada, int num_simbolos_pila ){
+
+}
 
 void APElimina(AP * p_ap){ }
 void APImprime(FILE * fd, AP* p_ap){ }
