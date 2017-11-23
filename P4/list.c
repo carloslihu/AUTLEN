@@ -246,3 +246,19 @@ int list_belongs(const List * list, void * pElem)
         return 0;
     else return 1;
 }
+
+int list_element_index(const List* list, void* pElem){
+    DynamicNode *aux = list->node;
+    int i = 0;
+
+    if(list == NULL || pElem == NULL)
+        return -1;
+
+    while (aux != NULL) {
+        if(list->cmp_element_function( dynamicNode_getData(  aux )  , pElem) == 0)
+            return i;
+        aux = dynamicNode_getNext(aux);
+        i++;
+    }
+    return -1;
+}

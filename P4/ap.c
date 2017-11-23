@@ -15,11 +15,11 @@ struct _AP{
 	List * sigma;/*lista de palabras para el alfabeto de la entrada*/
 	List * gamma;/*lista de palabras para el alfabeto de la pila*/
 	List * estados;/*lista de los posibles estados del automata*/
-	List * transiciones;/*lista de transiciones*/
 	Estado * estadoInicial;/*estado en el que comienza el automata*/
 	Palabra * cadenaEntrada; /*lista de palabras que componen la cadena de entrada*/
 	ConfiguracionAp * iniConf;
 	Relacion* transicionesL;
+	TransicionAP * transiciones;
 	ConfiguracionApnd * situaciones;/*lista de configuraciones actuales del automata*/
 	/*Transicion * transicion;*/
 	/*quiza algo para transicones lambda*/
@@ -113,7 +113,10 @@ AP * APInicializaEstado (AP * p_ap){ }
  * (todas las modificaciones se reflejan en la nueva configuracion y no en la configuracion antigua)
  * a partir de una configuracion A, crea una copia B y en esta B realiza las modificaciones que haría el automata si hiciera esa transicion
  */
-int APTransita(AP * p_ap){ }
+int APTransita(AP * p_ap){
+	if(p_ap == NULL) return -1;
+
+}
 /**
  * recorre la lista de configuraciones_ap (situaciones) y para cada una de ellas, llama a APTransita. si alcanza un estado final con la entrada vacia, termina.
  * Si consume toda la cadena de entrada y no esta en un estado final, termina con error.
