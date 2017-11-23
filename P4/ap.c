@@ -43,16 +43,21 @@ AP * APNuevo( char * nombre, int num_estados, int num_simbolos_entrada, int num_
                              (copy_element_function_type) copy_p_string,
                              (print_element_function_type) print_p_string,
                              (cmp_element_function_type) strcmp);
+    p_ap->estados=list_ini((destroy_element_function_type)estadoElimina,
+                             (copy_element_function_type) estado_copy,
+                             (print_element_function_type)estadoImprime,
+                             (cmp_element_function_type)estadoCompara);
     
     return p_ap;
 }
 
 void APElimina(AP * p_ap){/*NO TERMINADO*/
     free(p_ap->nombre);
+    list_destroy(p_ap->sigma);
+    list_destroy(p_ap->gamma);
+    list_destroy(p_ap->estados);
     free(p_ap);
 }
-
-void APElimina(AP * p_ap){ }
 void APImprime(FILE * fd, AP* p_ap){
 	if(fd == NULL || p_ap == NULL)
 		return;
@@ -80,8 +85,14 @@ void APImprime(FILE * fd, AP* p_ap){
 /**
  * @brief inserta un simbolo (que es un string) en el alfabeto de la entrada, que es una lista de PALABRAS
 */
-AP * APInsertaSimboloAlfabetoEntrada(AP * p_ap, char * simbolo){ }
-AP * APInsertaSimboloAlfabetoPila(AP * p_ap, char * simbolo){ }
+AP * APInsertaSimboloAlfabetoEntrada(AP * p_ap, char * simbolo){ 
+    list_insertFirst(p_ap->sigma, simbolo);
+    return p_ap;
+}
+AP * APInsertaSimboloAlfabetoPila(AP * p_ap, char * simbolo){ 
+    list_insertFirst(p_ap->gamma, simbolo);
+    return p_ap;
+}
 AP * APInsertaEstado(AP  * p_ap, char * nombre, int tipo){ }
 
 AP * APInsertaLTransicion(AP * p_ap,
@@ -98,7 +109,10 @@ AP * APInsertaTransicion(AP * p_ap,
 /**
  * @brief insertar una letra en la cadena de entrada. La cadena de entrada es una lista de PALABRAS, donde letra (que es un string) es un simbolo de esta cadena de entrada
  */
-AP * APInsertaLetra(AP * p_ap, char * letra){ }
+AP * APInsertaLetra(AP * p_ap, char * letra){ 
+    palabraInsertaLetra(p_ap->cadenaEntrada,letra);
+    return p_ap;
+    }
 /**
  * @brief calcula las relaciones instantaneas. al iniciar el automata, genera transiciones instantaneas que son composicion de otras transiciones instantaneas
  */
@@ -119,6 +133,6 @@ int APTransita(AP * p_ap){ }
  * Si consume toda la cadena de entrada y no esta en un estado final, termina con error.
  */
 int APProcesaEntrada(FILE *fd, AP * p_ap){ }
-void APInicializaCadena(AP * ap){
-    /*llamar a funcion palabraelimina*/
+void APInicializaCadena(AP * p_ap){
+    palabraElimina(p_ap->cadenaEntrada);
 }

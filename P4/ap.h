@@ -3,6 +3,7 @@
 #include "generic_string.h"
 #include "generic_collections_types.h"
 #include "configuracion_apnd.h"
+#include "relacion.h"
 #define SIMBOLO_INICIO_PILA "Z"
 typedef struct _AP AP;
 
@@ -33,5 +34,5 @@ AP * APCierraLTransicion(AP * p_ap);
 AP * APInicializaEstado(AP * p_ap);
 int APTransita(AP * p_ap);
 int APProcesaEntrada(FILE *fd, AP * p_ap);
-void APInicializaCadena(AP * ap);
+void APInicializaCadena(AP * p_ap);
 #endif
