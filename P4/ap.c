@@ -1,4 +1,4 @@
-
+#include "ap.h"
 struct _transicion{
 	char * nombre_simbolo_pila;
     char * nombre_estado_i;
@@ -15,22 +15,40 @@ struct _AP{
 	List * sigma;/*lista de palabras para el alfabeto de la entrada*/
 	List * gamma;/*lista de palabras para el alfabeto de la pila*/
 	List * estados;/*lista de los posibles estados del automata*/
-	List * transiciones/*lista de transiciones*/
+	List * transiciones;/*lista de transiciones*/
 	Estado * estadoInicial;/*estado en el que comienza el automata*/
 	Palabra * cadenaEntrada; /*lista de palabras que componen la cadena de entrada*/
 	ConfiguracionApnd * situaciones;/*lista de configuraciones actuales del automata*/
-	//Transicion * transicion;
-	//quiza algo para transicones lambda
+	/*Transicion * transicion;*/
+	/*quiza algo para transicones lambda*/
 };
 
 /**
  * @brief
 */
-AP * APNuevo( char * nombre, int num_estados, int num_simbolos_entrada, int num_simbolos_pila ){
-
+AP * APNuevo( char * nombre, int num_estados, int num_simbolos_entrada, int num_simbolos_pila ){/*NO TERMINADO*/
+    AP * p_ap;
+    p_ap=(AP*)malloc(sizeof(AP));
+    p_ap->nombre=(char*)calloc(strlen(nombre) + 1,sizeof(char));
+    p_ap->num_estados=num_estados;
+    p_ap->num_simbolos_entrada=num_simbolos_entrada;
+    p_ap->num_simbolos_pila=num_simbolos_pila;
+    p_ap->sigma=list_ini((destroy_element_function_type) destroy_p_string,
+                             (copy_element_function_type) copy_p_string,
+                             (print_element_function_type) print_p_string,
+                             (cmp_element_function_type) strcmp);
+    p_ap->gamma=list_ini((destroy_element_function_type) destroy_p_string,
+                             (copy_element_function_type) copy_p_string,
+                             (print_element_function_type) print_p_string,
+                             (cmp_element_function_type) strcmp);
+    
+    return p_ap;
 }
 
-void APElimina(AP * p_ap){ }
+void APElimina(AP * p_ap){/*NO TERMINADO*/
+    free(p_ap->nombre);
+    free(p_ap);
+}
 void APImprime(FILE * fd, AP* p_ap){ }
 /**
  * @brief inserta un simbolo (que es un string) en el alfabeto de la entrada, que es una lista de PALABRAS
@@ -74,3 +92,6 @@ int APTransita(AP * p_ap){ }
  * Si consume toda la cadena de entrada y no esta en un estado final, termina con error.
  */
 int APProcesaEntrada(FILE *fd, AP * p_ap){ }
+void APInicializaCadena(AP * ap){
+    /*llamar a funcion palabraelimina*/
+}
