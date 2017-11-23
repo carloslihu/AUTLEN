@@ -18,6 +18,8 @@ struct _AP{
 	List * transiciones;/*lista de transiciones*/
 	Estado * estadoInicial;/*estado en el que comienza el automata*/
 	Palabra * cadenaEntrada; /*lista de palabras que componen la cadena de entrada*/
+	ConfiguracionAp * iniConf;
+	Relacion* transicionesL;
 	ConfiguracionApnd * situaciones;/*lista de configuraciones actuales del automata*/
 	/*Transicion * transicion;*/
 	/*quiza algo para transicones lambda*/
@@ -49,7 +51,32 @@ void APElimina(AP * p_ap){/*NO TERMINADO*/
     free(p_ap->nombre);
     free(p_ap);
 }
-void APImprime(FILE * fd, AP* p_ap){ }
+
+void APElimina(AP * p_ap){ }
+void APImprime(FILE * fd, AP* p_ap){
+	if(fd == NULL || p_ap == NULL)
+		return;
+	fprintf(fd,"AP={\t%s\n\n",p_ap->nombre);
+	//TODO rehacer list_print para imprimir en el formato correcto
+	fprintf(fd,"Sigma=");
+	list_print(fd, p_ap->sigma);
+	fprintf(fd,"\nGamma=");
+	list_print(fd, p_ap->gamma);
+	fprintf(fd,"\nQ=");
+	list_print(fd, p_ap->estados);
+	fprintf(fd,"\n");
+
+	fprintf(fd,"configuracion actual:\n");
+	configuracionApImprime(fd,p_ap->iniConf);
+
+	fprintf(fd,"Cadena inicial:\n");
+	palabraImprime(fd, p_ap->cadenaEntrada);
+
+	fprintf(fd,"transiciones Lambda Puras:\n");
+	relacionImprime(fd,p_ap->transicionesL);
+
+	
+}
 /**
  * @brief inserta un simbolo (que es un string) en el alfabeto de la entrada, que es una lista de PALABRAS
 */
