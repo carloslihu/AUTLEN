@@ -9,19 +9,22 @@ struct _transicion{
 
 struct _AP{
 	char* nombre;/*nombre del automata*/
-	List * sigma;/*alfabeto de la entrada*/
-	List * gamma;/*alfabeto de la pila*/
+	int num_estados;
+	int num_simbolos_entrada;
+	int num_simbolos_pila;
+	List * sigma;/*lista de palabras para el alfabeto de la entrada*/
+	List * gamma;/*lista de palabras para el alfabeto de la pila*/
 	List * estados;/*lista de los posibles estados del automata*/
 	List * transiciones/*lista de transiciones*/
 	Estado * estadoInicial;/*estado en el que comienza el automata*/
-	Palabra * cadenaEntrada;
+	Palabra * cadenaEntrada; /*lista de palabras que componen la cadena de entrada*/
 	ConfiguracionApnd * situaciones;/*lista de configuraciones actuales del automata*/
 	//Transicion * transicion;
 	//quiza algo para transicones lambda
 };
 
 /**
- *
+ * @brief
 */
 AP * APNuevo( char * nombre, int num_estados, int num_simbolos_entrada, int num_simbolos_pila ){
 
@@ -29,6 +32,9 @@ AP * APNuevo( char * nombre, int num_estados, int num_simbolos_entrada, int num_
 
 void APElimina(AP * p_ap){ }
 void APImprime(FILE * fd, AP* p_ap){ }
+/**
+ * @brief inserta un simbolo (que es un string) en el alfabeto de la entrada, que es una lista de PALABRAS
+*/
 AP * APInsertaSimboloAlfabetoEntrada(AP * p_ap, char * simbolo){ }
 AP * APInsertaSimboloAlfabetoPila(AP * p_ap, char * simbolo){ }
 AP * APInsertaEstado(AP  * p_ap, char * nombre, int tipo){ }
@@ -45,7 +51,7 @@ AP * APInsertaTransicion(AP * p_ap,
                          Palabra * accion){ }
 
 /**
- * @brief insertar una letra en la cadena de entrada
+ * @brief insertar una letra en la cadena de entrada. La cadena de entrada es una lista de PALABRAS, donde letra (que es un string) es un simbolo de esta cadena de entrada
  */
 AP * APInsertaLetra(AP * p_ap, char * letra){ }
 /**
