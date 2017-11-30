@@ -8,6 +8,7 @@ struct _TransicionAP {
     List * nombres_pila;
     List * nombres_entrada;
     List * nombres_estados;
+    Relacion* transicionesL;
     List * **** acciones;
 };
 
@@ -59,32 +60,30 @@ TransicionAP* transicionAPInserta(TransicionAP * p_t,
         char * nombre_estado_f,
         char * nombre_simbolo_entrada,
         Palabra * accion) {
-    int i, j, k, l;
-    /*for (i = 0; i < p_t->num_simbolos_pila; i++) {
-        if (strcmp(nombre_simbolo_pila, list_get(p_t->nombres_pila, i)) == 0)
-            break;
-    }*/
-    i = list_element_index(p_t->nombres_pila, nombre_simbolo_pila);
-    /*for (j = 0; j < p_t->num_estados; j++) {
-        if (strcmp(nombre_simbolo_pila, list_get(p_t->nombres_estados, j)) == 0)
-            break;
-    }*/
-    j = list_element_index(p_t->nombres_estados, nombre_estado_i);
-    /*for (k = 0; j < p_t->num_estados; k++) {
-        if (strcmp(nombre_simbolo_pila, list_get(p_t->nombres_estados, k)) == 0)
-            break;
-    }*/
-    k = list_element_index(p_t->nombres_estados, nombre_estado_f);
-    /*for (l = 0; l < p_t->num_simbolos_entrada; l++) {
-        if (strcmp(nombre_simbolo_pila, list_get(p_t->nombres_entrada, l)) == 0)
-            break;
-    }*/
-    l = list_element_index(p_t->nombres_entrada, nombre_simbolo_entrada);
 
-    list_insertInOrder(p_t->acciones[i][j][k][l], accion);
+    int i, j, k, l;
+
+    if (accion) {
+        j = list_element_index(p_t->nombres_estados, nombre_estado_i);
+        k = list_element_index(p_t->nombres_estados, nombre_estado_f);
+        
+        if (nombre_simbolo_entrada == NULL) {
+            relacionInserta(p_ap->transicionesL, j, k);
+            return p_t;
+        }
+        
+        i = list_element_index(p_t->nombres_pila, nombre_simbolo_pila);
+        l = list_element_index(p_t->nombres_entrada, nombre_simbolo_entrada);
+
+        list_insertInOrder(p_t->acciones[i][j][k][l], accion);
+    }
     return p_t;
 }
-
+TransicionAP* Cierre(TransicionAP* p_ap){
+    if(relacionCierreTransitivo(p_ap->transicionesL))
+        return p_ap;
+    return NULL;
+}
 void transicionAPElimina(TransicionAP * p_t) {
     int i, j, k, l;
 

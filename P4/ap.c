@@ -1,12 +1,12 @@
 #include "ap.h"
 
-struct _transicion {
+/*struct _transicion {
     char * nombre_simbolo_pila;
     char * nombre_estado_i;
     char * nombre_estado_f;
     char * nombre_simbolo_entrada;
     Palabra* accion;
-};
+};*/
 
 struct _AP {
     char* nombre; /*nombre del automata*/
@@ -18,10 +18,10 @@ struct _AP {
     List * estados; /*lista de los posibles estados del automata*/
     Estado * estadoInicial; /*estado en el que comienza el automata*/
     Palabra * cadenaEntrada; /*lista de palabras que componen la cadena de entrada*/
-    ConfiguracionAp * iniConf;
-    Relacion* transicionesL;
+    /*ConfiguracionAp * iniConf;*/
+
     TransicionAP * transiciones;
-    ConfiguracionApnd * situaciones; /*lista de configuraciones actuales del automata*/
+    ConfiguracionApnd * configuraciones; /*lista de configuraciones actuales del automata*/
     /*Transicion * transicion;*/
     /*quiza algo para transicones lambda*/
 };
@@ -55,6 +55,7 @@ AP * APNuevo(char * nombre, int num_estados, int num_simbolos_entrada, int num_s
 
     return p_ap;
 }
+
 /*TODO*/
 void APElimina(AP * p_ap) {/*NO TERMINADO*/
     free(p_ap->nombre);
@@ -106,14 +107,19 @@ AP * APInsertaEstado(AP * p_ap, char * nombre, int tipo) {
     Estado* e;
     e = estadoNuevo(char * nombre, int tipo);
     list_insertInOrder(p_ap->estados, e);
+    if (tipo == INICIAL || tipo == INICIAL_Y_FINAL)
+        p_ap->estadoInicial = e;
     return p_ap;
 }
 
-AP * APInsertaLTransicion(AP * p_ap,
+/*AP * APInsertaLTransicion(AP * p_ap,
         char * nombre_estado_i,
         char * nombre_estado_f) {
+        transicionAPInserta(p_ap->transiciones,
+            nombre_simbolo_pila, nombre_estado_i, nombre_estado_f, NULL,
+            NULL);
 
-}
+}*/
 
 AP * APInsertaTransicion(AP * p_ap,
         char * nombre_simbolo_pila,
@@ -121,6 +127,7 @@ AP * APInsertaTransicion(AP * p_ap,
         char * nombre_estado_f,
         char * nombre_simbolo_entrada,
         Palabra * accion) {
+
     transicionAPInserta(p_ap->transiciones,
             nombre_simbolo_pila, nombre_estado_i, nombre_estado_f, nombre_simbolo_entrada,
             accion);
@@ -139,12 +146,33 @@ AP * APInsertaLetra(AP * p_ap, char * letra) {
  * @brief calcula las relaciones instantaneas. al iniciar el automata, genera transiciones instantaneas que son composicion de otras transiciones instantaneas
  */
 AP * APCierraLTransicion(AP * p_ap) {
+    if (cierre(p_ap->transiciones))
+        return p_ap;
+    return NULL;
 }
 
 /**
  * genera la configuracion_apnd que contiene el estado inicial y los estados a los que se puede llegar mediante el inicial a traves de transiciones instantaneas
  */
 AP * APInicializaEstado(AP * p_ap) {
+    Stack * pila;
+    Palabra *cadena;
+    ConfiguracionAp* p_cap;
+    if (p_ap->configuraciones)
+        configuracionApndDestroy(p_ap->configuraciones);
+
+    pila=stack_ini((destroy_element_function_type) destroy_p_string, 
+    (copy_element_function_type) copy_p_string, 
+    (print_element_function_type) print_p_string, 
+    (cmp_element_function_type) strcmp);
+    p_ap->configuraciones = configuracionApndIni();
+    
+    p_cap = configuracionApNueva(p_ap->estadoInicial, pila, p_ap->cadenaEntrada);
+
+    configuracionApndInsert(p_ap->configuraciones, p_cap);
+    /*liberar pila y cosas*/
+    stack_destroy(pila);
+    return p_ap;
 }
 
 /**
@@ -163,7 +191,7 @@ int APTransita(AP * p_ap) {
  * Si consume toda la cadena de entrada y no esta en un estado final, termina con error.
  */
 int APProcesaEntrada(FILE *fd, AP * p_ap) {
-    
+
 }
 
 void APInicializaCadena(AP * p_ap) {
