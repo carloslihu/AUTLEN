@@ -36,7 +36,7 @@ AP * APNuevo(char * nombre, int num_estados, int num_simbolos_entrada, int num_s
     p_ap->num_estados = num_estados;
     p_ap->num_simbolos_entrada = num_simbolos_entrada;
     p_ap->num_simbolos_pila = num_simbolos_pila;
-    
+
     p_ap->sigma = list_ini((destroy_element_function_type) destroy_p_string,
             (copy_element_function_type) copy_p_string,
             (print_element_function_type) print_p_string,
@@ -49,13 +49,13 @@ AP * APNuevo(char * nombre, int num_estados, int num_simbolos_entrada, int num_s
             (copy_element_function_type) estado_copy,
             (print_element_function_type) estadoImprime,
             (cmp_element_function_type) estadoCompara);
-    
+
     p_ap->transiciones = transicionAPNueva(nombre, num_simbolos_pila, num_estados, num_simbolos_entrada,
             p_ap->gamma, p_ap->estados, p_ap->sigma);
 
     return p_ap;
 }
-
+/*TODO*/
 void APElimina(AP * p_ap) {/*NO TERMINADO*/
     free(p_ap->nombre);
     list_destroy(p_ap->sigma);
@@ -103,12 +103,16 @@ AP * APInsertaSimboloAlfabetoPila(AP * p_ap, char * simbolo) {
 }
 
 AP * APInsertaEstado(AP * p_ap, char * nombre, int tipo) {
+    Estado* e;
+    e = estadoNuevo(char * nombre, int tipo);
+    list_insertInOrder(p_ap->estados, e);
+    return p_ap;
 }
 
 AP * APInsertaLTransicion(AP * p_ap,
         char * nombre_estado_i,
         char * nombre_estado_f) {
-    
+
 }
 
 AP * APInsertaTransicion(AP * p_ap,
@@ -117,7 +121,10 @@ AP * APInsertaTransicion(AP * p_ap,
         char * nombre_estado_f,
         char * nombre_simbolo_entrada,
         Palabra * accion) {
-
+    transicionAPInserta(p_ap->transiciones,
+            nombre_simbolo_pila, nombre_estado_i, nombre_estado_f, nombre_simbolo_entrada,
+            accion);
+    return p_ap;
 }
 
 /**
@@ -156,8 +163,10 @@ int APTransita(AP * p_ap) {
  * Si consume toda la cadena de entrada y no esta en un estado final, termina con error.
  */
 int APProcesaEntrada(FILE *fd, AP * p_ap) {
+    
 }
 
 void APInicializaCadena(AP * p_ap) {
     palabraElimina(p_ap->cadenaEntrada);
+    p_ap->cadenaEntrada = palabraNueva();
 }
