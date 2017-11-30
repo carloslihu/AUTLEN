@@ -112,14 +112,14 @@ AP * APInsertaEstado(AP * p_ap, char * nombre, int tipo) {
     return p_ap;
 }
 
-/*AP * APInsertaLTransicion(AP * p_ap,
+AP * APInsertaLTransicion(AP * p_ap,
         char * nombre_estado_i,
         char * nombre_estado_f) {
-        transicionAPInserta(p_ap->transiciones,
-            nombre_simbolo_pila, nombre_estado_i, nombre_estado_f, NULL,
+    transicionAPInserta(p_ap->transiciones,
+            NULL, nombre_estado_i, nombre_estado_f, NULL,
             NULL);
 
-}*/
+}
 
 AP * APInsertaTransicion(AP * p_ap,
         char * nombre_simbolo_pila,
@@ -161,12 +161,12 @@ AP * APInicializaEstado(AP * p_ap) {
     if (p_ap->configuraciones)
         configuracionApndDestroy(p_ap->configuraciones);
 
-    pila=stack_ini((destroy_element_function_type) destroy_p_string, 
-    (copy_element_function_type) copy_p_string, 
-    (print_element_function_type) print_p_string, 
-    (cmp_element_function_type) strcmp);
+    pila = stack_ini((destroy_element_function_type) destroy_p_string,
+            (copy_element_function_type) copy_p_string,
+            (print_element_function_type) print_p_string,
+            (cmp_element_function_type) strcmp);
     p_ap->configuraciones = configuracionApndIni();
-    
+
     p_cap = configuracionApNueva(p_ap->estadoInicial, pila, p_ap->cadenaEntrada);
 
     configuracionApndInsert(p_ap->configuraciones, p_cap);

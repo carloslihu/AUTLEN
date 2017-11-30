@@ -31,7 +31,7 @@ TransicionAP * transicionAPNueva(char * nombre, int num_simbolos_pila, int num_e
 
     aux_return->num_simbolos_pila = num_simbolos_pila;
     aux_return->num_estados = num_estados;
-    aux_return->num_simbolos_entrada = num_simbolos_entrada;
+    aux_return->num_simbolos_entrada = num_simbolos_entrada + 1;
 
     aux_return->acciones = (List * ****) calloc(num_simbolos_pila, sizeof (List * ***));
     for (i = 0; i < num_simbolos_pila; i++) {
@@ -39,8 +39,8 @@ TransicionAP * transicionAPNueva(char * nombre, int num_simbolos_pila, int num_e
         for (j = 0; j < num_estados; j++) {
             aux_return->acciones[i][j] = (List * **) calloc(num_estados, sizeof (List * *));
             for (k = 0; k < num_estados; k++) {
-                aux_return->acciones[i][j][k] = (List * *) calloc(num_simbolos_entrada, sizeof (List *));
-                for (l = 0; l < num_simbolos_entrada; l++) {
+                aux_return->acciones[i][j][k] = (List * *) calloc(aux_return->num_simbolos_entrada, sizeof (List *));
+                for (l = 0; l < aux_return->num_simbolos_entrada; l++) {
                     aux_return->acciones[i][j][k][l] = list_ini((destroy_element_function_type) palabraElimina,
                             (copy_element_function_type) palabraCopia,
                             (print_element_function_type) palabraImprime,
@@ -66,12 +66,12 @@ TransicionAP* transicionAPInserta(TransicionAP * p_t,
     if (accion) {
         j = list_element_index(p_t->nombres_estados, nombre_estado_i);
         k = list_element_index(p_t->nombres_estados, nombre_estado_f);
-        
+
         if (nombre_simbolo_entrada == NULL) {
             relacionInserta(p_ap->transicionesL, j, k);
             return p_t;
         }
-        
+
         i = list_element_index(p_t->nombres_pila, nombre_simbolo_pila);
         l = list_element_index(p_t->nombres_entrada, nombre_simbolo_entrada);
 
@@ -79,11 +79,13 @@ TransicionAP* transicionAPInserta(TransicionAP * p_t,
     }
     return p_t;
 }
-TransicionAP* Cierre(TransicionAP* p_ap){
-    if(relacionCierreTransitivo(p_ap->transicionesL))
+
+TransicionAP* Cierre(TransicionAP* p_ap) {
+    if (relacionCierreTransitivo(p_ap->transicionesL))
         return p_ap;
     return NULL;
 }
+
 void transicionAPElimina(TransicionAP * p_t) {
     int i, j, k, l;
 
