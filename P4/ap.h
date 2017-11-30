@@ -1,9 +1,6 @@
 #ifndef AP_H
 #define AP_H
-#include "generic_string.h"
-#include "generic_collections_types.h"
-#include "configuracion_apnd.h"
-#include "relacion.h"
+#include "transicion_ap.h"
 #define SIMBOLO_INICIO_PILA "Z"
 typedef struct _AP AP;
 
