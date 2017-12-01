@@ -23,12 +23,15 @@ Palabra * palabraInsertaLetra(Palabra * p_p, char * letra);
 int palabraTamano(Palabra * p_p);
 
 /* Hace en memoria nueva una copia de la palabra y la devuelve */
-Palabra * palabraCopia (Palabra * p_p);
+Palabra * palabraCopia(Palabra * p_p);
 
 /* Para comparar dos palabras, devuelve un valor negativo, cero o positivo en
 función de que todas las letras de la misma posición y de izquierda a derecha
 sean iguales. En el caso de que no lo sean, se devuelve el strcmp de la primera
 pareja de letras que no sean iguales */
-int palabraCompara( Palabra * p_p1, Palabra * p_p2);
-
+int palabraCompara(Palabra * p_p1, Palabra * p_p2);
+char* palabraPrimer(Palabra*p_p);
+Palabra* palabraExtraePrimer(Palabra *p_p);
+Bool palabraVacia(Palabra* p_p);
+void palabraVoltear(Palabra* p_p);
 #endif

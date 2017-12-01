@@ -1,7 +1,7 @@
 #include "ap.h"
 
 struct _AP {
-    /*char*nombre;*/
+    char* nombre;
     Estado * estadoInicial; /*estado en el que comienza el automata*/
     Palabra * cadenaEntrada; /*lista de palabras que componen la cadena de entrada*/
     TransicionAP * transiciones;
@@ -17,8 +17,8 @@ AP * APNuevo(char * nombre, int num_estados, int num_simbolos_entrada, int num_s
     AP * p_ap;
     List* pila, *entrada, *estados;
     p_ap = (AP*) malloc(sizeof (AP));
-    /*p_ap->nombre=(char*) calloc(strlen(nombre) + 1, sizeof (char));
-    strcpy(p_ap->nombre,nombre);*/
+    p_ap->nombre = (char*) calloc(strlen(nombre) + 1, sizeof (char));
+    strcpy(p_ap->nombre, nombre);
 
     p_ap->num_estados = num_estados;
     p_ap->estados = list_ini((destroy_element_function_type) estadoElimina,
@@ -57,24 +57,21 @@ void APElimina(AP * p_ap) {/*NO TERMINADO*/
 void APImprime(FILE * fd, AP* p_ap) {
     if (fd == NULL || p_ap == NULL)
         return;
-    /*fprintf(fd, "AP={\t%s\n\n", p_ap->nombre);*/
-    /*TODO rehacer list_print para imprimir en el formato correcto*/
-    /*fprintf(fd, "Sigma=");
-    list_print(fd, p_ap->sigma);
-    fprintf(fd, "\nGamma=");
-    list_print(fd, p_ap->gamma);
+    fprintf(fd, "AP={\t%s\n\n", p_ap->nombre);
+    transicionImprimeAlfabeto(fd, p_ap->transiciones);
     fprintf(fd, "\nQ=");
     list_print(fd, p_ap->estados);
-    fprintf(fd, "\n");*/
-
+    fprintf(fd, "\n");
     fprintf(fd, "configuracion actual:\n");
-    /*configuracionApImprime(fd, p_ap->iniConf);*/
-
+    configuracionApndPrint(fd, p_ap->configuraciones);
     fprintf(fd, "Cadena inicial:\n");
     palabraImprime(fd, p_ap->cadenaEntrada);
 
-    fprintf(fd, "transiciones Lambda Puras:\n");
-    /*relacionImprime(fd, p_ap->transicionesL);*/
+    fprintf(fd, "\ntransiciones Lambda Puras:\n");
+    transicionImprimeRelacion(fd, p_ap->transiciones);
+    transicionImprimeTransiciones(fd, p_ap->transiciones);
+
+
 
 
 }
@@ -95,10 +92,10 @@ AP * APInsertaSimboloAlfabetoPila(AP * p_ap, char * simbolo) {
 AP * APInsertaEstado(AP * p_ap, char * nombre, int tipo) {
     Estado* e;
     e = estadoNuevo(nombre, tipo);
-    list_insertFirst(p_ap->estados, e);
+    list_insertLast(p_ap->estados, e);
     transicionAPInsertaSimboloAlfabetoEstado(p_ap->transiciones, nombre);
     if (tipo == INICIAL || tipo == INICIAL_Y_FINAL)
-        p_ap->estadoInicial = e; /*TODO copiarlo?*/
+        p_ap->estadoInicial = e;
     return p_ap;
 }
 
@@ -183,8 +180,13 @@ AP * APInicializaEstado(AP * p_ap) {
  * a partir de una configuracion A, crea una copia B y en esta B realiza las modificaciones que haría el automata si hiciera esa transicion
  */
 int APTransita(AP * p_ap) {
+    ConfiguracionApnd* capnd;
     if (p_ap == NULL) return -1;
-    /*TODO*/
+    capnd = transicionAPTransita(p_ap->transiciones, p_ap->estados, p_ap->configuraciones, p_ap->cadenaEntrada);
+    
+    configuracionApndDestroy(p_ap->configuraciones);
+    p_ap->configuraciones = capnd;
+    return 1;
 }
 
 /**
@@ -193,6 +195,22 @@ int APTransita(AP * p_ap) {
  */
 int APProcesaEntrada(FILE *fd, AP * p_ap) {
     /*TODO*/
+    int i, j = 0;
+    fprintf(fd, "SE VA A PROCESAR LA ENTRADA\n");
+    palabraImprime(fd, p_ap->cadenaEntrada);
+    fprintf(fd, "\nA PARTIR DE ESTA CONFIGURACIÓN INICIAL:\n");
+    configuracionApndPrint(fd, p_ap->configuraciones);
+
+    do {
+        fprintf(fd, "	ITERACION %d\n"
+                "TRAS ITERAR LA CONFIGURACIÓN ACTUAL ES ", j);
+        i = APTransita(p_ap);
+        configuracionApndPrint(fd, p_ap->configuraciones);
+        j++;
+        
+    } while (i == 0 && !configuracionApndIsEmpty(p_ap->configuraciones));
+
+    return i;
 }
 
 void APInicializaCadena(AP * p_ap) {
