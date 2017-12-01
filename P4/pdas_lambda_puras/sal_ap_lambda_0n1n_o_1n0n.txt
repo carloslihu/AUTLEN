@@ -1,0 +1,285 @@
+
+
+********************************** AUTÓMATA A PILA *****************************************
+
+AP={	enunciado
+
+	Sigma={ 0 1 }
+
+
+	Gamma={ 0 1 Z }
+
+
+	Q={->q0  q1.1  q1.2  q2.1  q2.2  q1.3*  q2.3*  }
+
+
+	Congiguración actual:
+
+(q2.1  <Z > [(6) 0 0 0 1 1 1])  (q1.1  <Z > [(6) 0 0 0 1 1 1])  (->q0  <Z > [(6) 0 0 0 1 1 1])  
+
+
+	Cadena inicial:
+
+[(6) 0 0 0 1 1 1]
+
+
+	Transiciones Lambda Puras:
+
+Lambda pura={
+		[0]	[1]	[2]	[3]	[4]	[5]	[6]
+		CIERRE
+	[0]	0	1	0	1	0	0	0
+	[1]	0	0	0	0	0	0	0
+	[2]	0	0	0	0	0	0	0
+	[3]	0	0	0	0	0	0	0
+	[4]	0	0	0	0	0	0	0
+	[5]	0	0	0	0	0	0	0
+	[6]	0	0	0	0	0	0	0
+
+		POTENCIA i
+	[0]	0	1	0	1	0	0	0
+	[1]	0	0	0	0	0	0	0
+	[2]	0	0	0	0	0	0	0
+	[3]	0	0	0	0	0	0	0
+	[4]	0	0	0	0	0	0	0
+	[5]	0	0	0	0	0	0	0
+	[6]	0	0	0	0	0	0	0
+
+		RELACION INICIAL i
+	[0]	0	1	0	1	0	0	0
+	[1]	0	0	0	0	0	0	0
+	[2]	0	0	0	0	0	0	0
+	[3]	0	0	0	0	0	0	0
+	[4]	0	0	0	0	0	0	0
+	[5]	0	0	0	0	0	0	0
+	[6]	0	0	0	0	0	0	0
+}
+
+
+	Transiciones que modificadn entrada o pila: [ <cima pila> <estado inicial> <estado final> <simbolo entrada> ==> ] <accion en la pila>
+
+
+[0,q1.1,q1.1,0]==>[(2) 0 0]  
+
+[0,q1.1,q1.2,1]==>[(0)]  
+
+[0,q1.2,q1.2,1]==>[(0)]  
+
+[1,q2.1,q2.1,1]==>[(2) 1 1]  
+
+[1,q2.1,q2.2,0]==>[(0)]  
+
+[1,q2.2,q2.2,0]==>[(0)]  
+
+[Z,q1.1,q1.1,0]==>[(2) 0 Z]  
+
+[Z,q1.2,q1.3,lambda]==>[(0)]  
+
+[Z,q2.1,q2.1,1]==>[(2) 1 Z]  
+
+[Z,q2.2,q2.3,lambda]==>[(0)]  
+
+
+********************************** PROCESA CADENA  *****************************************
+
+
+SE VA A PROCESAR LA ENTRADA	[(6) 0 0 0 1 1 1]
+
+A PARTIR DE ESTA CONFIGURACIÓN INICIAL:
+
+(q2.1  <Z > [(6) 0 0 0 1 1 1])  (q1.1  <Z > [(6) 0 0 0 1 1 1])  (->q0  <Z > [(6) 0 0 0 1 1 1])  
+
+
+
+	ITERACION 0
+
+TRAS ITERAR LA CONFIGURACIÓN ACTUAL ES 
+
+(q1.1  <0 Z > [(5) 0 0 1 1 1])  
+
+
+
+
+	ITERACION 1
+
+TRAS ITERAR LA CONFIGURACIÓN ACTUAL ES 
+
+(q1.1  <0 0 Z > [(4) 0 1 1 1])  
+
+
+
+
+	ITERACION 2
+
+TRAS ITERAR LA CONFIGURACIÓN ACTUAL ES 
+
+(q1.1  <0 0 0 Z > [(3) 1 1 1])  
+
+
+
+
+	ITERACION 3
+
+TRAS ITERAR LA CONFIGURACIÓN ACTUAL ES 
+
+(q1.2  <0 0 Z > [(2) 1 1])  
+
+
+
+
+	ITERACION 4
+
+TRAS ITERAR LA CONFIGURACIÓN ACTUAL ES 
+
+(q1.2  <0 Z > [(1) 1])  
+
+
+
+
+	ITERACION 5
+
+TRAS ITERAR LA CONFIGURACIÓN ACTUAL ES 
+
+(q1.2  <Z > [(0)])  
+
+
+
+
+	ITERACION 6
+
+TRAS ITERAR LA CONFIGURACIÓN ACTUAL ES 
+
+(q1.3*  <> [(0)])  
+
+
+
+
+	ITERACION 7
+
+TRAS ITERAR LA CONFIGURACIÓN ACTUAL ES 
+
+
+
+
+
+¡¡¡ RECONOCIDA !!!!
+
+
+
+
+********************************** PROCESA CADENA  *****************************************
+
+
+SE VA A PROCESAR LA ENTRADA	[(4) 1 1 0 0]
+
+A PARTIR DE ESTA CONFIGURACIÓN INICIAL:
+
+(q2.1  <Z > [(4) 1 1 0 0])  (q1.1  <Z > [(4) 1 1 0 0])  (->q0  <Z > [(4) 1 1 0 0])  
+
+
+
+	ITERACION 0
+
+TRAS ITERAR LA CONFIGURACIÓN ACTUAL ES 
+
+(q2.1  <1 Z > [(3) 1 0 0])  
+
+
+
+
+	ITERACION 1
+
+TRAS ITERAR LA CONFIGURACIÓN ACTUAL ES 
+
+(q2.1  <1 1 Z > [(2) 0 0])  
+
+
+
+
+	ITERACION 2
+
+TRAS ITERAR LA CONFIGURACIÓN ACTUAL ES 
+
+(q2.2  <1 Z > [(1) 0])  
+
+
+
+
+	ITERACION 3
+
+TRAS ITERAR LA CONFIGURACIÓN ACTUAL ES 
+
+(q2.2  <Z > [(0)])  
+
+
+
+
+	ITERACION 4
+
+TRAS ITERAR LA CONFIGURACIÓN ACTUAL ES 
+
+(q2.3*  <> [(0)])  
+
+
+
+
+	ITERACION 5
+
+TRAS ITERAR LA CONFIGURACIÓN ACTUAL ES 
+
+
+
+
+
+¡¡¡ RECONOCIDA !!!!
+
+
+
+
+********************************** PROCESA CADENA  *****************************************
+
+
+SE VA A PROCESAR LA ENTRADA	[(4) 0 1 1 0]
+
+A PARTIR DE ESTA CONFIGURACIÓN INICIAL:
+
+(q2.1  <Z > [(4) 0 1 1 0])  (q1.1  <Z > [(4) 0 1 1 0])  (->q0  <Z > [(4) 0 1 1 0])  
+
+
+
+	ITERACION 0
+
+TRAS ITERAR LA CONFIGURACIÓN ACTUAL ES 
+
+(q1.1  <0 Z > [(3) 1 1 0])  
+
+
+
+
+	ITERACION 1
+
+TRAS ITERAR LA CONFIGURACIÓN ACTUAL ES 
+
+(q1.2  <Z > [(2) 1 0])  
+
+
+
+
+	ITERACION 2
+
+TRAS ITERAR LA CONFIGURACIÓN ACTUAL ES 
+
+(q1.3*  <> [(2) 1 0])  
+
+
+
+
+	ITERACION 3
+
+TRAS ITERAR LA CONFIGURACIÓN ACTUAL ES 
+
+
+
+
+
+¡¡¡ RECHAZADA !!!!

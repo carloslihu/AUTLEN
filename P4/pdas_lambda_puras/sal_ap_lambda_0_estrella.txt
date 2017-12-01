@@ -1,0 +1,145 @@
+
+
+********************************** AUTÓMATA A PILA *****************************************
+
+AP={	enunciado
+
+	Sigma={ 0 }
+
+
+	Gamma={ Z }
+
+
+	Q={->q0  q1  q2*  }
+
+
+	Congiguración actual:
+
+(q2*  <Z > [(3) 0 0 0])  (q1  <Z > [(3) 0 0 0])  (->q0  <Z > [(3) 0 0 0])  
+
+
+	Cadena inicial:
+
+[(3) 0 0 0]
+
+
+	Transiciones Lambda Puras:
+
+Lambda pura++={
+		[0]	[1]	[2]
+		CIERRE
+	[0]	1	1	1
+	[1]	1	1	1
+	[2]	0	0	0
+
+		POTENCIA i
+	[0]	0	1	0
+	[1]	1	0	1
+	[2]	0	0	0
+
+		RELACION INICIAL i
+	[0]	0	1	0
+	[1]	1	0	1
+	[2]	0	0	0
+}
+
+
+	Transiciones que modificadn entrada o pila: [ <cima pila> <estado inicial> <estado final> <simbolo entrada> ==> ] <accion en la pila>
+
+
+[Z,q0,q1,0]==>[(1) Z]  
+
+[Z,q1,q2,lambda]==>[(0)]  
+
+
+********************************** PROCESO DE CADENA ***************************************
+
+
+SE VA A PROCESAR LA ENTRADA	[(3) 0 0 0]
+
+A PARTIR DE ESTA CONFIGURACIÓN INICIAL:
+
+(q2*  <Z > [(3) 0 0 0])  (q1  <Z > [(3) 0 0 0])  (->q0  <Z > [(3) 0 0 0])  
+
+
+
+	ITERACION 0
+
+TRAS ITERAR LA CONFIGURACIÓN ACTUAL ES 
+
+(q2*  <> [(3) 0 0 0])  (q2*  <Z > [(2) 0 0])  (->q0  <Z > [(2) 0 0])  (q1  <Z > [(2) 0 0])  
+
+
+
+
+	ITERACION 1
+
+TRAS ITERAR LA CONFIGURACIÓN ACTUAL ES 
+
+(q2*  <Z > [(1) 0])  (->q0  <Z > [(1) 0])  (q1  <Z > [(1) 0])  (q2*  <> [(2) 0 0])  
+
+
+
+
+	ITERACION 2
+
+TRAS ITERAR LA CONFIGURACIÓN ACTUAL ES 
+
+(q2*  <Z > [(0)])  (->q0  <Z > [(0)])  (q1  <Z > [(0)])  (q2*  <> [(1) 0])  
+
+
+
+
+	ITERACION 3
+
+TRAS ITERAR LA CONFIGURACIÓN ACTUAL ES 
+
+(q2*  <> [(0)])  
+
+
+
+¡¡¡ RECONOCIDA !!!!
+
+
+
+
+********************************** PROCESO DE CADENA ***************************************
+
+
+SE VA A PROCESAR LA ENTRADA	[(2) 0 0]
+
+A PARTIR DE ESTA CONFIGURACIÓN INICIAL:
+
+(q2*  <Z > [(2) 0 0])  (q1  <Z > [(2) 0 0])  (->q0  <Z > [(2) 0 0])  
+
+
+
+	ITERACION 0
+
+TRAS ITERAR LA CONFIGURACIÓN ACTUAL ES 
+
+(q2*  <> [(2) 0 0])  (q2*  <Z > [(1) 0])  (->q0  <Z > [(1) 0])  (q1  <Z > [(1) 0])  
+
+
+
+
+	ITERACION 1
+
+TRAS ITERAR LA CONFIGURACIÓN ACTUAL ES 
+
+(q2*  <Z > [(0)])  (->q0  <Z > [(0)])  (q1  <Z > [(0)])  (q2*  <> [(1) 0])  
+
+
+
+
+	ITERACION 2
+
+TRAS ITERAR LA CONFIGURACIÓN ACTUAL ES 
+
+(q2*  <> [(0)])  
+
+
+
+¡¡¡ RECONOCIDA !!!!
+
+

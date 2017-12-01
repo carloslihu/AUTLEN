@@ -262,3 +262,15 @@ int list_element_index(const List* list, void* pElem){
     }
     return -1;
 }
+/*codigo nuestro*/
+const void* list_get(const List* list, int i){
+    DynamicNode *aux = list->node;
+    int j;
+    if(list == NULL || i<0)
+        return NULL;
+
+    for(j=0;j<i && aux!=NULL;j++){
+        aux = dynamicNode_getNext(aux);
+    }
+    return dynamicNode_getData(aux);
+}

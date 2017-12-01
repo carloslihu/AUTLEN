@@ -1,5 +1,6 @@
 #ifndef AP_H
 #define AP_H
+
 #include "transicion_ap.h"
 #define SIMBOLO_INICIO_PILA "Z"
 typedef struct _AP AP;

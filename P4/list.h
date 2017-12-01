@@ -1,5 +1,5 @@
 #ifndef LIST_H
-#define	LIST_H
+#define LIST_H
 
 #include "basic_types.h"
 #include "generic_collections_types.h"
@@ -28,7 +28,7 @@ void * list_extractLast(List* list);
 Bool list_isEmpty(const List* list);
 
 /* Devuelve el elemento i-ésimo almacenado en la lista. En caso de error, devuelve NULL. */
-/*const void* list_get(const List* list, int i);*/
+ void* list_get(const List* list, int i);
 /* Devuelve el tamaño de una lista. */
 int list_size(const List* list);
 
