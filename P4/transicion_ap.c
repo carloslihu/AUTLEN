@@ -304,7 +304,8 @@ int transicionAPTransita(TransicionAP* p_t, List*estados, ConfiguracionApnd** p_
                             cap_aux = configuracionApNueva(estado, pila_aux, cadena_aux);
                             configuracionApndInsert(res, cap_aux);
                             configuracionApElimina(cap_aux);
-                            aux = transicionLAPpos_estado_f(p_t, nombre_estado_i, &tam);
+
+                            aux = transicionLAPpos_estado_f(p_t, estadoNombre(estado), &tam);
                             for (o = 0; o < tam; o++) {
                                 e = list_get(estados, aux[o]);
                                 cap_aux = configuracionApNueva(e, pila_aux, cadena_aux);
@@ -312,6 +313,7 @@ int transicionAPTransita(TransicionAP* p_t, List*estados, ConfiguracionApnd** p_
                                 configuracionApElimina(cap_aux);
                             }
                             free(aux);
+
                             palabraElimina(accion_aux);
                             stack_destroy(pila_aux);
                             palabraElimina(cadena_aux);

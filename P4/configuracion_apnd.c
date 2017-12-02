@@ -23,7 +23,7 @@ ConfiguracionApnd* configuracionApndInsert(ConfiguracionApnd* capnd, const Confi
         return NULL;
     }
     if (list_belongs(capnd->p_caps, (void*) p_cap) == FALSE) {
-        capnd->p_caps = list_insertLast(capnd->p_caps, p_cap);
+        capnd->p_caps = list_insertFirst(capnd->p_caps, p_cap);
     }
     return capnd;
 }

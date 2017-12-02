@@ -47,8 +47,10 @@ AP * APNuevo(char * nombre, int num_estados, int num_simbolos_entrada, int num_s
 }
 
 void APElimina(AP * p_ap) {/*NO TERMINADO*/
+    free(p_ap->nombre);
     estadoElimina(p_ap->estadoInicial);
     palabraElimina(p_ap->cadenaEntrada);
+    list_destroy(p_ap->estados);
     transicionAPElimina(p_ap->transiciones);
     configuracionApndDestroy(p_ap->configuraciones);
     free(p_ap);
@@ -94,8 +96,10 @@ AP * APInsertaEstado(AP * p_ap, char * nombre, int tipo) {
     e = estadoNuevo(nombre, tipo);
     list_insertLast(p_ap->estados, e);
     transicionAPInsertaSimboloAlfabetoEstado(p_ap->transiciones, nombre);
-    if (tipo == INICIAL || tipo == INICIAL_Y_FINAL)
-        p_ap->estadoInicial = e;
+    if (tipo == INICIAL || tipo == INICIAL_Y_FINAL) {
+        p_ap->estadoInicial = estado_copy(e);
+    }
+    estadoElimina(e);
     return p_ap;
 }
 
@@ -169,6 +173,7 @@ AP * APInicializaEstado(AP * p_ap) {
     }
 
     free(aux);
+    /*TODO*/
     stack_destroy(pila);
     return p_ap;
 }
@@ -190,14 +195,14 @@ int APTransita(AP * p_ap) {
  */
 int APProcesaEntrada(FILE *fd, AP * p_ap) {
     int i = 0, j = 0;
-    fprintf(fd, "SE VA A PROCESAR LA ENTRADA\n");
+    fprintf(fd, "SE VA A PROCESAR LA ENTRADA\t");
     palabraImprime(fd, p_ap->cadenaEntrada);
     fprintf(fd, "\nA PARTIR DE ESTA CONFIGURACIÓN INICIAL:\n");
     configuracionApndPrint(fd, p_ap->configuraciones);
 
     for (j = 0; i != 1 && !configuracionApndIsEmpty(p_ap->configuraciones); j++) {
         fprintf(fd, "	ITERACION %d\n"
-                "TRAS ITERAR LA CONFIGURACIÓN ACTUAL ES ", j);
+                "TRAS ITERAR LA CONFIGURACIÓN ACTUAL ES \n", j);
         i = APTransita(p_ap);
         configuracionApndPrint(fd, p_ap->configuraciones);
     };
