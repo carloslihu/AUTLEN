@@ -170,18 +170,20 @@ TransicionAP* transicioncierreLambda(TransicionAP* p_ap) {
     return NULL;
 }
 
+/*Devuelve un array con las posiciones finales, dado un estado inicial*/
 int* transicionLAPpos_estado_f(TransicionAP * p_t, char* nombre_estado_i, int* tam) {
-    int i, f;
+    int i, f, size;
     int* pos_estado_f;
-    *tam = 0;
+    size = 0;
     pos_estado_f = (int*) calloc(p_t->num_estados, sizeof (int));
     i = list_element_index(p_t->nombres_estados, nombre_estado_i);
     for (f = 0; f < p_t->num_estados; f++) {
         if (relacionCierreIJ(p_t->transicionesL, i, f) == 1) {
-            pos_estado_f[*tam] = f;
-            *tam++;
+            pos_estado_f[size] = f;
+            size++;
         }
     }
+    *tam = size;
     return pos_estado_f;
 }
 
@@ -223,76 +225,116 @@ void transicionImprimeTransiciones(FILE * fd, TransicionAP * p_t) {
     }
 }
 
-ConfiguracionApnd* transicionAPTransita(TransicionAP* p_t, List*estados, ConfiguracionApnd* capnd, Palabra* cadenaEntrada) {
-    ConfiguracionApnd* res;
+/*FALTA añadir transiciones lambda puras*/
+int transicionAPTransita(TransicionAP* p_t, List*estados, ConfiguracionApnd** p_capnd) {
+    ConfiguracionApnd* res, *capnd;
     ConfiguracionAp*cap, *cap_aux;
     char* tope_pila, *tope_entrada, *nombre_estado_i, *tope_accion;
-    int i, j, k, l, m;
-    Stack*pila;
-    Palabra*accion, *lambda, *cadena_aux;
-    Estado*estado;
+    int i, j, k, l[2], m, tope_entrada_index, n, o, tam;
+    int flag_reconocido = 0;
+    int*aux;
+    Stack*pila, *pila_aux;
+    Palabra*accion, *lambda, *cadena_aux, *accion_aux, *cadenaEntrada;
+    Estado*estado, *e;
+
+    capnd = *p_capnd;
     lambda = palabraNueva();
     palabraInsertaLetra(lambda, "lambda");
-
     res = configuracionApndIni();
 
     while (!configuracionApndIsEmpty(capnd)) {
         cap = configuracionApndExtract(capnd);
-        /*logica aqui*/
-        /*calcular indice de primer elemento de pila*/
+
+        /*calcular indice de primer elemento de pila (i)*/
         pila = configuracionApPila(cap);
         tope_pila = stack_pop(pila);
+        /*mirar si pila a null*/
+        if (tope_pila) {
+            i = list_element_index(p_t->nombres_pila, tope_pila);
 
-        i = list_element_index(p_t->nombres_pila, tope_pila);
+            /*calcular indice de estado inicial (j)*/
+            nombre_estado_i = estadoNombre(configuracionApEstado(cap));
+            j = list_element_index(p_t->nombres_estados, nombre_estado_i);
 
-        nombre_estado_i = estadoNombre(configuracionApEstado(cap));
-        /*calcular indice de estado inicial*/
-        j = list_element_index(p_t->nombres_estados, nombre_estado_i);
-        /*para cada simbolo de entrada*/
-        /*calcular primer elemento de la entrada*/
-        tope_entrada = palabraPrimer(cadenaEntrada);
-        l = list_element_index(p_t->nombres_entrada, tope_entrada);
-        /*para cada estado final*/
-        for (k = 0; k < p_t->num_estados; k++) {
-            /*para simbolo entrada y lambda*/
-            do {
-                if (!list_isEmpty(p_t->acciones[i][j][k][l])) {
+            /*calcular primer elemento de la entrada (l)*/
+            cadenaEntrada = configuracionApCadena(cap);
+            tope_entrada = palabraPrimer(cadenaEntrada);
+            tope_entrada_index = list_element_index(p_t->nombres_entrada, tope_entrada);
 
-                    estado = list_get(estados, k);
-                    /*para cada una de las acciones de la lista*/
-                    for (m = 0; m < list_size(p_t->acciones[i][j][k][l]); m++) {
-                        accion = list_get(p_t->acciones[i][j][k][l], m);
 
-                        if (palabraCompara(accion, lambda) != 0) {
-                            /*cadena_aux = palabraExtraePrimer(cadenaEntrada);
-                            cap_aux = configuracionApNueva(estado, pila, cadena_aux);
-                            configuracionApndInsert(res, cap_aux);
-                            palabraElimina(cadena_aux);*/
-                            palabraVoltear(accion);
-                            while (palabraVacia(accion) == FALSE) {
-                                tope_accion = palabraPrimer(accion);
-                                stack_push(pila, tope_accion);
-                                accion = palabraExtraePrimer(accion);
+            l[0] = tope_entrada_index;
+            l[1] = p_t->num_simbolos_entrada - 1;
+            /*para cada estado final*/
+            for (k = 0; k < p_t->num_estados; k++) {
+                if (tope_entrada == NULL)
+                    n = 1;
+                else
+                    n = 0;
+                /*para simbolo entrada y lambda*/
+                for (; n < 2; n++) {
+
+                    if (!list_isEmpty(p_t->acciones[i][j][k][l[n]])) {
+
+                        estado = list_get(estados, k);
+                        /*para cada una de las acciones de la lista*/
+                        for (m = 0; m < list_size(p_t->acciones[i][j][k][l[n]]); m++) {
+                            accion = list_get(p_t->acciones[i][j][k][l[n]], m);
+                            accion_aux = palabraCopia(accion);
+                            pila_aux = stack_copy(pila);
+                            /*metemos acciones en pila*/
+                            if (palabraCompara(accion_aux, lambda) != 0) {
+                                while (palabraVacia(accion_aux) == FALSE) {
+                                    tope_accion = palabraPop(accion_aux);
+                                    stack_push(pila_aux, tope_accion);
+                                    free(tope_accion);
+                                }
+
                             }
 
+                            /*cadena entrada nueva*/
+                            if (n == 1) {/*caso lambda*/
+                                cadena_aux = palabraCopia(cadenaEntrada);
+                            } else {/*otro caso*/
+                                cadena_aux = palabraExtraePrimer(cadenaEntrada);
+                            }
+                            if (palabraVacia(cadena_aux) &&
+                                    ((estadoTipo(estado) == FINAL) || (estadoTipo(estado) == INICIAL_Y_FINAL) || stack_isEmpty(pila_aux))) {
+                                flag_reconocido = 1;
+                            }
+                            cap_aux = configuracionApNueva(estado, pila_aux, cadena_aux);
+                            configuracionApndInsert(res, cap_aux);
+                            configuracionApElimina(cap_aux);
+                            aux = transicionLAPpos_estado_f(p_t, nombre_estado_i, &tam);
+                            for (o = 0; o < tam; o++) {
+                                e = list_get(estados, aux[o]);
+                                cap_aux = configuracionApNueva(e, pila_aux, cadena_aux);
+                                configuracionApndInsert(res, cap_aux);
+                                configuracionApElimina(cap_aux);
+                            }
+                            free(aux);
+                            palabraElimina(accion_aux);
+                            stack_destroy(pila_aux);
+                            palabraElimina(cadena_aux);
                         }
 
-                        /*cadena entrada es lambda*/
-                        if (l == p_t->num_simbolos_entrada - 1) {
-                            cadena_aux = palabraCopia(cadenaEntrada);
-                        } else {
-                            cadena_aux = palabraExtraePrimer(cadenaEntrada);
-                        }
+
                     }
                 }
-                if (l != p_t->num_simbolos_entrada - 1)
-                    l = p_t->num_simbolos_entrada - 1;
-                else
-                    l = -1;
-            } while (l == (p_t->num_simbolos_entrada - 1));
+            }
         }
+
         configuracionApElimina(cap);
+
     }
+
     palabraElimina(lambda);
-    return res;
+    configuracionApndDestroy(*p_capnd);
+    *p_capnd = res;
+    /*todo return*/
+
+    /*return 1 si entrada vacia y estado final
+              si entrada vacia pila vacia*/
+    /*else return 0*/
+    return flag_reconocido;
 }
+

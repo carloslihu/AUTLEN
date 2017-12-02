@@ -165,20 +165,30 @@ Palabra* palabraExtraePrimer(Palabra *p_p) {
 }
 
 Bool palabraVacia(Palabra* p_p) {
-    if (p_p == NULL || p_p->symbols == NULL)
+    if (p_p == NULL || p_p->symbols == NULL || p_p->size == 0)
         return TRUE;
     return FALSE;
 }
 
-void palabraVoltear(Palabra* p_p){
+void palabraVoltear(Palabra* p_p) {
     char** aux;
     int i;
-    if(p_p == NULL)
+    if (p_p == NULL)
         return;
-    aux = (char**)calloc(p_p->size,sizeof(char*));
-    for(i=0;i<p_p->size;i++){
+    aux = (char**) calloc(p_p->size, sizeof (char*));
+    for (i = 0; i < p_p->size; i++) {
         aux[i] = p_p->symbols[p_p->size - 1 - i];
     }
     free(p_p->symbols);
     p_p->symbols = aux;
+}
+
+char*palabraPop(Palabra* p_p) {
+    char*letra;
+    p_p->size--;
+    letra = (char*) calloc(strlen(p_p->symbols[p_p->size]) + 1, sizeof (char));
+    strcpy(letra, p_p->symbols[p_p->size]);
+    p_p->symbols = (char**) realloc(p_p->symbols, sizeof (char*)*p_p->size);
+    return letra;
+
 }

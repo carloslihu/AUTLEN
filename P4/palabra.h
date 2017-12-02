@@ -34,4 +34,5 @@ char* palabraPrimer(Palabra*p_p);
 Palabra* palabraExtraePrimer(Palabra *p_p);
 Bool palabraVacia(Palabra* p_p);
 void palabraVoltear(Palabra* p_p);
+char*palabraPop(Palabra* p_p);
 #endif

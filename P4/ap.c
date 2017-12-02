@@ -180,13 +180,8 @@ AP * APInicializaEstado(AP * p_ap) {
  * a partir de una configuracion A, crea una copia B y en esta B realiza las modificaciones que haría el automata si hiciera esa transicion
  */
 int APTransita(AP * p_ap) {
-    ConfiguracionApnd* capnd;
     if (p_ap == NULL) return -1;
-    capnd = transicionAPTransita(p_ap->transiciones, p_ap->estados, p_ap->configuraciones, p_ap->cadenaEntrada);
-    
-    configuracionApndDestroy(p_ap->configuraciones);
-    p_ap->configuraciones = capnd;
-    return 1;
+    return transicionAPTransita(p_ap->transiciones, p_ap->estados, &p_ap->configuraciones);
 }
 
 /**
@@ -194,22 +189,24 @@ int APTransita(AP * p_ap) {
  * Si consume toda la cadena de entrada y no esta en un estado final, termina con error.
  */
 int APProcesaEntrada(FILE *fd, AP * p_ap) {
-    /*TODO*/
-    int i, j = 0;
+    int i = 0, j = 0;
     fprintf(fd, "SE VA A PROCESAR LA ENTRADA\n");
     palabraImprime(fd, p_ap->cadenaEntrada);
     fprintf(fd, "\nA PARTIR DE ESTA CONFIGURACIÓN INICIAL:\n");
     configuracionApndPrint(fd, p_ap->configuraciones);
 
-    do {
+    for (j = 0; i != 1 && !configuracionApndIsEmpty(p_ap->configuraciones); j++) {
         fprintf(fd, "	ITERACION %d\n"
                 "TRAS ITERAR LA CONFIGURACIÓN ACTUAL ES ", j);
         i = APTransita(p_ap);
         configuracionApndPrint(fd, p_ap->configuraciones);
-        j++;
-        
-    } while (i == 0 && !configuracionApndIsEmpty(p_ap->configuraciones));
+    };
 
+    if (i == 1) {
+        fprintf(fd, "\n¡¡¡ RECONOCIDA !!!!\n");
+    } else {
+        fprintf(fd, "\n¡¡¡ RECHAZADA !!!!\n");
+    }
     return i;
 }
 

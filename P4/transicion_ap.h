@@ -44,5 +44,5 @@ int* transicionLAPpos_estado_f(TransicionAP * p_t, char* nombre_estado_i, int* t
 void transicionImprimeAlfabeto(FILE * fd, TransicionAP * p_t);
 void transicionImprimeRelacion(FILE * fd, TransicionAP * p_t);
 void transicionImprimeTransiciones(FILE * fd, TransicionAP * p_t);
-ConfiguracionApnd* transicionAPTransita(TransicionAP* p_t, List*estados, ConfiguracionApnd* capnd, Palabra* cadenaEntrada);
+int transicionAPTransita(TransicionAP* p_t, List*estados, ConfiguracionApnd** p_capnd);
 #endif

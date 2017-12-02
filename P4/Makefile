@@ -15,7 +15,7 @@ OBJ=$(patsubst %,%.o,$(NAMES))
 P4 = p4
 # $ make
 # $ make all
-all: p4
+all: pr_enunciado pr_enunciado_lambda pr_enunciado_lambda_0_estrella
 
 ########################################################################
 # P4
@@ -23,7 +23,13 @@ all: p4
 %.o: %.c $(DEPS)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-p4: pr_enunciado.o $(OBJ)
+pr_enunciado: pr_enunciado.o $(OBJ)
+	$(CC) $^ -Wall $(LIBS) -o $@
+
+pr_enunciado_lambda: pr_enunciado_lambda.o $(OBJ)
+	$(CC) $^ -Wall $(LIBS) -o $@
+
+pr_enunciado_lambda_0_estrella: pr_enunciado_lambda_0_estrella.o $(OBJ)
 	$(CC) $^ -Wall $(LIBS) -o $@
 	
 ########################################################################
@@ -48,7 +54,7 @@ info:
 clean:
 	@echo "Borrando objetos, ejecutables, etc."
 	@rm -fr Doxyfile latex html
-	@rm -f *~ *.o core p4
+	@rm -f *~ *.o core p4 pr_enunciado pr_enunciado_lambda pr_enunciado_lambda_0_estrella
 	
 ########################################################################
 # Using utilities

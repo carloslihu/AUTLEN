@@ -9,9 +9,9 @@ ConfiguracionApnd * configuracionApndIni() {
     ConfiguracionApnd * capnd;
     capnd = (ConfiguracionApnd *) malloc(sizeof (ConfiguracionApnd));
     capnd->p_caps = list_ini((destroy_element_function_type) configuracionApElimina,
-                             (copy_element_function_type) configuracionApCopia,
-                             (print_element_function_type) configuracionApImprime,
-                             (cmp_element_function_type) configuracionCompara);
+            (copy_element_function_type) configuracionApCopia,
+            (print_element_function_type) configuracionApImprime,
+            (cmp_element_function_type) configuracionCompara);
     return capnd;
 }
 
@@ -23,7 +23,7 @@ ConfiguracionApnd* configuracionApndInsert(ConfiguracionApnd* capnd, const Confi
         return NULL;
     }
     if (list_belongs(capnd->p_caps, (void*) p_cap) == FALSE) {
-        capnd->p_caps = list_insertFirst(capnd->p_caps, p_cap);
+        capnd->p_caps = list_insertLast(capnd->p_caps, p_cap);
     }
     return capnd;
 }
@@ -55,13 +55,9 @@ int configuracionApndSize(const ConfiguracionApnd * capnd) {
 /* Se imprime todas las configuraciones deterministas. No se especifica en que
 orden */
 int configuracionApndPrint(FILE *fd, const ConfiguracionApnd* capnd) {
-    int i, size;
     if (!fd || !capnd)
         return -1;
-    size = configuracionApndSize(capnd);
-    for (i = 0; i < size; i++) {
-        list_print(fd, capnd->p_caps);
-    }
+    list_print(fd, capnd->p_caps);
     return 0;
 
 }

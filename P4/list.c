@@ -167,7 +167,7 @@ void* list_extractLast(List* list) {
 }
 
 Bool list_isEmpty(const List* list) {
-    if (list == NULL || list->node == NULL)
+    if (list->node == NULL)
         return TRUE;
     return FALSE;
 }
