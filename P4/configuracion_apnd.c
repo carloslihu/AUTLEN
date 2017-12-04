@@ -32,7 +32,7 @@ ConfiguracionApnd* configuracionApndInsert(ConfiguracionApnd* capnd, const Confi
 desaparece de la coleccion.
 No se especifica el orden en el que se extrae */
 ConfiguracionAp * configuracionApndExtract(ConfiguracionApnd * capnd) {
-    if (!capnd)
+    if (!capnd || !capnd->p_caps || list_isEmpty(capnd->p_caps))
         return NULL;
     return list_extractFirst(capnd->p_caps);
 }

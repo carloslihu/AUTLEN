@@ -242,7 +242,7 @@ int transicionAPTransita(TransicionAP* p_t, List*estados, ConfiguracionApnd** p_
     palabraInsertaLetra(lambda, "lambda");
     res = configuracionApndIni();
 
-    while (!configuracionApndIsEmpty(capnd)) {
+    while(!configuracionApndIsEmpty(capnd)){
         cap = configuracionApndExtract(capnd);
 
         /*calcular indice de primer elemento de pila (i)*/
@@ -261,7 +261,6 @@ int transicionAPTransita(TransicionAP* p_t, List*estados, ConfiguracionApnd** p_
             tope_entrada = palabraPrimer(cadenaEntrada);
             tope_entrada_index = list_element_index(p_t->nombres_entrada, tope_entrada);
 
-
             l[0] = tope_entrada_index;
             l[1] = p_t->num_simbolos_entrada - 1;
             /*para cada estado final*/
@@ -271,9 +270,9 @@ int transicionAPTransita(TransicionAP* p_t, List*estados, ConfiguracionApnd** p_
                 else
                     n = 0;
                 /*para simbolo entrada y lambda*/
-                for (; n < 2; n++) {
+                for (; n < 2 ; n++) {
 
-                    if (!list_isEmpty(p_t->acciones[i][j][k][l[n]])) {
+                    if (l[n]!=-1 && !list_isEmpty(p_t->acciones[i][j][k][l[n]])) {
 
                         estado = list_get(estados, k);
                         /*para cada una de las acciones de la lista*/
@@ -288,7 +287,8 @@ int transicionAPTransita(TransicionAP* p_t, List*estados, ConfiguracionApnd** p_
                                     stack_push(pila_aux, tope_accion);
                                     free(tope_accion);
                                 }
-
+                            palabraElimina(accion_aux);
+                            accion_aux = NULL;
                             }
 
                             /*cadena entrada nueva*/
@@ -313,7 +313,6 @@ int transicionAPTransita(TransicionAP* p_t, List*estados, ConfiguracionApnd** p_
                                 configuracionApElimina(cap_aux);
                             }
                             free(aux);
-
                             palabraElimina(accion_aux);
                             stack_destroy(pila_aux);
                             palabraElimina(cadena_aux);
@@ -324,9 +323,8 @@ int transicionAPTransita(TransicionAP* p_t, List*estados, ConfiguracionApnd** p_
                 }
             }
         }
-
+        free(tope_pila);
         configuracionApElimina(cap);
-
     }
 
     palabraElimina(lambda);

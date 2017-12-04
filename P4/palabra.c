@@ -81,12 +81,11 @@ Palabra * palabraCopia(Palabra * p_p) {
         return NULL;
 
     output->symbols = (char**) calloc(p_p->size, sizeof (char*));
-    if (output->symbols == NULL) {
+    if (output->symbols == NULL && p_p->size > 0) {
         palabraElimina(output);
         return NULL;
     }
     output->size = p_p->size;
-
     for (i = 0; i < output->size; i++) {
         output->symbols[i] = calloc(strlen(p_p->symbols[i]) + 1, sizeof (char));
         if (output->symbols[i] == NULL) { /*on calloc error, we free all calloc'd symbols[i], free the output and return*/
@@ -129,6 +128,8 @@ int palabraCompara(Palabra * p_p1, Palabra * p_p2) {
 }
 
 char* palabraPrimer(Palabra*p_p) {
+    if(!p_p || !p_p->symbols || p_p->size==0)
+        return NULL;
     return p_p->symbols[0];
 }
 
@@ -188,6 +189,7 @@ char*palabraPop(Palabra* p_p) {
     p_p->size--;
     letra = (char*) calloc(strlen(p_p->symbols[p_p->size]) + 1, sizeof (char));
     strcpy(letra, p_p->symbols[p_p->size]);
+    free(p_p->symbols[p_p->size]);
     p_p->symbols = (char**) realloc(p_p->symbols, sizeof (char*)*p_p->size);
     return letra;
 

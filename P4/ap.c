@@ -42,6 +42,7 @@ AP * APNuevo(char * nombre, int num_estados, int num_simbolos_entrada, int num_s
     p_ap->cadenaEntrada = palabraNueva();
     p_ap->transiciones = transicionAPNueva(nombre, num_simbolos_pila, num_estados, num_simbolos_entrada,
             pila, estados, entrada);
+    p_ap->configuraciones = NULL;
 
     return p_ap;
 }
