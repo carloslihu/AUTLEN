@@ -257,7 +257,7 @@ int list_element_index(const List* list, void* pElem) {
     return -1;
 }
 
-/*codigo nuestro*/
+/*devuelve el elemento en un cierto indice de la lista*/
 void* list_get(const List* list, int i) {
     DynamicNode *aux = list->node;
     int j;

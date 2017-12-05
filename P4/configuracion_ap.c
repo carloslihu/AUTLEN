@@ -80,15 +80,15 @@ int configuracionCompara(ConfiguracionAp * p_cap1, ConfiguracionAp * p_cap2) {
         return palabraCompara(p_cap1->cadena, p_cap2->cadena);
 
 }
-
+/*devuelve el estado del ap*/
 Estado*configuracionApEstado(ConfiguracionAp * p_cap) {
     return p_cap->estado;
 }
-
+/*devuelve la pila del ap*/
 Stack * configuracionApPila(ConfiguracionAp * p_cap) {
     return p_cap->pila;
 }
-
+/*devuelve la cadena del ap*/
 Palabra*configuracionApCadena(ConfiguracionAp * p_cap) {
     return p_cap->cadena;
 }

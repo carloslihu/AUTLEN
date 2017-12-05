@@ -105,7 +105,7 @@ void transicionAPElimina(TransicionAP * p_t) {
 	free(p_t);
 }
 /**
- * @brief inserta una transicion lambda nueva
+ * @brief inserta una transicion nueva
  */
 TransicionAP* transicionAPInserta(TransicionAP * p_t,
                                   char * nombre_simbolo_pila,
@@ -258,7 +258,8 @@ void transicionImprimeTransiciones(FILE * fd, TransicionAP * p_t) {
 }
 
 /**
- * @brief TODO
+ * @brief a partir de una transicion, la lista de estados, y una lista de configuraciones p_capnd
+ * genera otra lista de configuraciones que sobrescribe en p_capnd
  */
 int transicionAPTransita(TransicionAP* p_t, List*estados, ConfiguracionApnd** p_capnd) {
 	ConfiguracionApnd* res, *capnd;
@@ -271,21 +272,28 @@ int transicionAPTransita(TransicionAP* p_t, List*estados, ConfiguracionApnd** p_
 	Palabra*accion, *lambda, *cadena_aux, *accion_aux, *cadenaEntrada;
 	Estado*estado, *e;
 
+
 	capnd = *p_capnd;
+	/*por convenio, usamos la palabra lambda como acción lambda*/
 	lambda = palabraNueva();
 	palabraInsertaLetra(lambda, "lambda");
+	/*aquí vamos generando el apnd salida*/
 	res = configuracionApndIni();
 
+
 	while (!configuracionApndIsEmpty(capnd)) {
+		/*para cada capd en el capnd inicial*/
 		cap = configuracionApndExtract(capnd);
 
-		/*calcular indice de primer elemento de pila (i)*/
-		pila = configuracionApPila(cap);
-		tope_pila = stack_pop(pila);
-		/*mirar si pila a null*/
-		if (tope_pila) {
-			i = list_element_index(p_t->nombres_pila, tope_pila);
 
+		pila = configuracionApPila(cap);
+		/*sacamos el elemento en el tope de la pila*/
+		tope_pila = stack_pop(pila);
+		/*si pila está a null, no generamos ningún capd nuevo*/
+		if (tope_pila) {
+
+			/*calcular indice de primer elemento de pila (i)*/
+			i = list_element_index(p_t->nombres_pila, tope_pila);
 			/*calcular indice de estado inicial (j)*/
 			nombre_estado_i = estadoNombre(configuracionApEstado(cap));
 			j = list_element_index(p_t->nombres_estados, nombre_estado_i);
@@ -295,26 +303,33 @@ int transicionAPTransita(TransicionAP* p_t, List*estados, ConfiguracionApnd** p_
 			tope_entrada = palabraPrimer(cadenaEntrada);
 			tope_entrada_index = list_element_index(p_t->nombres_entrada, tope_entrada);
 
+			/*la l va a tomar 2 valores en el bucle:
+				el primero será el elemento en el tope de la cadena de entrada
+				el segundo será el de procesar lambda*/
 			l[0] = tope_entrada_index;
 			l[1] = p_t->num_simbolos_entrada - 1;
+
 			/*para cada estado final*/
 			for (k = 0; k < p_t->num_estados; k++) {
+				/*en el caso de que la cadena esté vacía, sólo procesamos con la acción que procese lambda */
 				if (tope_entrada == NULL)
 					n = 1;
 				else
 					n = 0;
-				/*para simbolo entrada y lambda*/
 				for (; n < 2 ; n++) {
-
+					/*dados los indices i,j,k,l fijados, vamos mirando las listas de acciones que tienen
+					alguna accion designada*/
 					if (l[n] != -1 && !list_isEmpty(p_t->acciones[i][j][k][l[n]])) {
 
+						/*obtenemos el estado en la posicion k*/
 						estado = list_get(estados, k);
-						/*para cada una de las acciones de la lista*/
 						for (m = 0; m < list_size(p_t->acciones[i][j][k][l[n]]); m++) {
+
 							accion = list_get(p_t->acciones[i][j][k][l[n]], m);
 							accion_aux = palabraCopia(accion);
 							pila_aux = stack_copy(pila);
-							/*metemos acciones en pila*/
+							/*para cada una de las acciones, las metemos en pila_aux en el caso que no sea lambda
+							(el tope de la pila ha sido sacado previamente para calcular el indice i)*/
 							if (palabraCompara(accion_aux, lambda) != 0) {
 								while (palabraVacia(accion_aux) == FALSE) {
 									tope_accion = palabraPop(accion_aux);
@@ -325,20 +340,25 @@ int transicionAPTransita(TransicionAP* p_t, List*estados, ConfiguracionApnd** p_
 								accion_aux = NULL;
 							}
 
-							/*cadena entrada nueva*/
+							/*cadena entrada de la configuracion*/
 							if (n == 1) {/*caso lambda*/
 								cadena_aux = palabraCopia(cadenaEntrada);
 							} else {/*otro caso*/
 								cadena_aux = palabraExtraePrimer(cadenaEntrada);
 							}
+							/*aqui vemos que la cadena sea aceptada bajo alguno de las condiciones de vaciado de pila o estado final
+							si alguna configuracion generada se acepta, ponemos el flag a 1*/
 							if (palabraVacia(cadena_aux) &&
 							        ((estadoTipo(estado) == FINAL) || (estadoTipo(estado) == INICIAL_Y_FINAL) || stack_isEmpty(pila_aux))) {
 								flag_reconocido = 1;
 							}
+							/*con los parametros creados previamente, creamos la nueva configuracion a insertar en el capnd resultado*/
 							cap_aux = configuracionApNueva(estado, pila_aux, cadena_aux);
 							configuracionApndInsert(res, cap_aux);
 							configuracionApElimina(cap_aux);
 
+							/*aqui cerramos la configuracion creada, usando la relacion para calcular las configuraciones
+							resultantes de usar las transiciones lambda puras e insertandolas tambien en el capnd resultado*/
 							aux = transicionLAPpos_estado_f(p_t, estadoNombre(estado), &tam);
 							for (o = 0; o < tam; o++) {
 								e = list_get(estados, aux[o]);
@@ -364,11 +384,9 @@ int transicionAPTransita(TransicionAP* p_t, List*estados, ConfiguracionApnd** p_
 	palabraElimina(lambda);
 	configuracionApndDestroy(*p_capnd);
 	*p_capnd = res;
-	/*todo return*/
-
-	/*return 1 si entrada vacia y estado final
-	          si entrada vacia pila vacia*/
-	/*else return 0*/
+	/*este flag que hemos calculado previamente:
+		está a 0 por defecto
+		se pone a 1 si la cadena ha sido reconocida*/
 	return flag_reconocido;
 }
 

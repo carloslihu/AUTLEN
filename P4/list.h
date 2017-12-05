@@ -38,6 +38,7 @@ int list_print(FILE *fd, const List* list);
 /* Devuelve 1 si el elemento está en la lista */
 int list_belongs(const List * list, void * p_elem);
 
+/*devuelve el indice del elemento en la lista*/
 int list_element_index(const List* list, void* pElem);
 
 

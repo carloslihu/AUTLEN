@@ -142,7 +142,7 @@ Imprime toda la pila, colocando el elemento en la cima al principio de la impres
 int stack_print(FILE* fp, const Stack* s) {
     int printedChars;
     int i;
-    if (fp == NULL || s == NULL || s->items == NULL || s->size <= 0)
+    if (fp == NULL || s == NULL)
         return 0;
     /* David: Cual es el proposito de printedChars? A la hora de imprimir, es print_element_function quien se encarga por lo que
      * s->print_element_function(fp, s->items[i]) seria suficiente. Esta funcion devolveria siempre 0

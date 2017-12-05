@@ -14,7 +14,7 @@ struct _AP {
 /**
  * @brief inicializa el automata
  */
-AP * APNuevo(char * nombre, int num_estados, int num_simbolos_entrada, int num_simbolos_pila) {/*NO TERMINADO*/
+AP * APNuevo(char * nombre, int num_estados, int num_simbolos_entrada, int num_simbolos_pila) {
 	AP * p_ap;
 	List* pila, *entrada, *estados;
 	p_ap = (AP*) malloc(sizeof (AP));
@@ -198,7 +198,6 @@ AP * APInicializaEstado(AP * p_ap) {
 	}
 
 	free(aux);
-	/*TODO*/
 	stack_destroy(pila);
 	return p_ap;
 }

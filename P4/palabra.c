@@ -126,7 +126,7 @@ int palabraCompara(Palabra * p_p1, Palabra * p_p2) {
 
     return 0;
 }
-
+/*Devuelve el primer elemento de la palabra*/
 char* palabraPrimer(Palabra*p_p) {
     if(!p_p || !p_p->symbols || p_p->size==0)
         return NULL;
@@ -164,13 +164,13 @@ Palabra* palabraExtraePrimer(Palabra *p_p) {
     return output;
 
 }
-
+/*Dice si la palabra esta vacia*/
 Bool palabraVacia(Palabra* p_p) {
     if (p_p == NULL || p_p->symbols == NULL || p_p->size == 0)
         return TRUE;
     return FALSE;
 }
-
+/*le da la vuelta a la palabra*/
 void palabraVoltear(Palabra* p_p) {
     char** aux;
     int i;
@@ -183,7 +183,7 @@ void palabraVoltear(Palabra* p_p) {
     free(p_p->symbols);
     p_p->symbols = aux;
 }
-
+/*extra el ultimo elemento de la palabra*/
 char*palabraPop(Palabra* p_p) {
     char*letra;
     p_p->size--;
