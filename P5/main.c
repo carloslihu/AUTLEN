@@ -31,10 +31,11 @@ int main(int argc, char ** argv)
         AFNDInsertaLTransicion(p_afnd, "q0", "q1");
         AFNDInsertaLTransicion(p_afnd, "q3", "q5");
         AFNDCierraLTransicion(p_afnd);
-
+        AFNDImprime(stdout, p_afnd);
+        /*AFNDADot(p_afnd);*/
         afd  = AFNDTransforma(p_afnd);
         AFNDImprime(stdout, afd);
-        AFNDADot(afd);
+        /*AFNDADot(afd);*/
 
         AFNDElimina(afd);
         AFNDElimina(p_afnd);
