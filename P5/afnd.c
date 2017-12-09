@@ -2,7 +2,8 @@
 #include <stdio.h>
 #include <string.h>
 #include "afnd.h"
-typedef void(*destroy_element_function_type)(void*);
+
+/*typedef void(*destroy_element_function_type)(void*);
 typedef void(*(*
         copy_element_function_type)(const void*));
 typedef int(*
@@ -37,12 +38,14 @@ const void*list_get(const List*list,
         int i);
 int list_size(const List*list);
 int list_print(FILE*fd, const List*list);
-int list_belongs(const List*list, void*p_elem);
+int list_belongs(const List*list, void*p_elem);*/
+
 int print_p_string(FILE*fd, const
         void*p_c);
 void*copy_p_string(const void*p_c);
 void destroy_p_string(void*p_c);
 int cmp_p_string(const void*p_c1, const void*p_c2);
+
 typedef struct _Relacion
 Relacion;
 Relacion*relacionNueva(char*nombre, int num_elementos);
@@ -72,7 +75,7 @@ Palabra*palabraInsertaLetra(Palabra*p_p,
 char*palabraQuitaInicio(Palabra*p_p);
 int palabraTamano(Palabra*p_p
         );
-typedef struct _Estado Estado;
+/*typedef struct _Estado Estado;*/
 Estado*estadoNuevo(char*nombre, int tipo);
 void
 estadoElimina(Estado*p_s);
@@ -137,8 +140,8 @@ struct _Transicion {
     char*simbolo;
     char*estado_fin;
 };
-typedef
-struct _Transicion Transicion;
+/*typedef
+struct _Transicion Transicion;*/
 
 Transicion*transicionNueva(char*estado_inicio,
         char*simbolo, char*estado_fin) {

@@ -9,8 +9,8 @@ LIBS = -lm -pthread
 CC = gcc
 CFLAGS = -g -Wall -ansi -pedantic
 EXE=main
-NAMES=transforma afnd
-DEPS=$(patsubst %,%.h,$(NAMES))
+NAMES=transforma afnd dynamic_node list cint
+DEPS=$(patsubst %,%.h,$(NAMES)) basic_types.h generic_collection_types.h
 OBJ=$(patsubst %,%.o,$(NAMES))
 # $ make
 # $ make all
