@@ -2,29 +2,38 @@
 
 AFND * AFNDTransforma(AFND * afnd) {
     AFND * afd;
-    List* transiciones;
     List * cis;
-    Transicion * t;
+    List* t_inicio, *t_simbolo, *t_fin; /* listas donde guardaré los valores de la transicion
+                                         son listas de char* */
     CInt*ci_aux, *ci;
     char nombre_estado[50], e_1[50], e_2[50];
-    /*int **ci;*/
     int num_estados, num_simbolos, num_estados_final;
     int tipo, tipo_aux;
     int flag_i = 0, flag_f = 0;
     int i, j;
     int i_e1, i_s, i_e2;
-
+    char* e_1_aux, * e_2_aux, *s_aux;
     if (!afnd)
         return NULL;
 
-    transiciones = list_ini((destroy_element_function_type) transicionElimina,
-            (copy_element_function_type) transicionCopia,
-            (print_element_function_type) transicionImprime,
-            (cmp_element_function_type) transicionCompara);
+    t_inicio = list_ini((destroy_element_function_type) destroy_p_string,
+            (copy_element_function_type) copy_p_string,
+            (print_element_function_type) print_p_string,
+            (cmp_element_function_type) strcmp);
+    t_simbolo = list_ini((destroy_element_function_type) destroy_p_string,
+            (copy_element_function_type) copy_p_string,
+            (print_element_function_type) print_p_string,
+            (cmp_element_function_type) strcmp);
+    t_fin = list_ini((destroy_element_function_type) destroy_p_string,
+            (copy_element_function_type) copy_p_string,
+            (print_element_function_type) print_p_string,
+            (cmp_element_function_type) strcmp);
+
     cis = list_ini((destroy_element_function_type) CIntElimina,
             (copy_element_function_type) CIntCopia,
             (print_element_function_type) CIntImprime,
             (cmp_element_function_type) CIntCompara);
+    
     num_estados = AFNDNumEstados(afnd);
     num_simbolos = AFNDNumSimbolos(afnd);
 
@@ -33,15 +42,13 @@ AFND * AFNDTransforma(AFND * afnd) {
     i = AFNDIndiceEstadoInicial(afnd);
     tipo = INICIAL;
     ci_aux = CIntNuevo(num_estados);
+    CIntInicializa(ci_aux);
     for (j = 0; j < num_estados; j++)
         if (AFNDCierreLTransicionIJ(afnd, i, j) == 1) {
             CIntInserta(ci_aux, j, 1);
-        } else {
-            CIntInserta(ci_aux, j, 0);
         }
     list_insertLast(cis, ci_aux);
     CIntElimina(ci_aux);
-
 
 
     /* calculamos el resto de estados */
@@ -53,7 +60,6 @@ AFND * AFNDTransforma(AFND * afnd) {
             break;
 
         for (i_s = 0; i_s < num_simbolos; i_s++) {
-
             /* calculamos fila de ints */
             CIntInicializa(ci);
             for (i_e1 = 0; i_e1 < num_estados; i_e1++) {
@@ -62,9 +68,7 @@ AFND * AFNDTransforma(AFND * afnd) {
 
                         if (AFNDTransicionIndicesEstadoiSimboloEstadof(afnd, i_e1, i_s, i_e2) == 1) {
                             CIntInserta(ci, i_e2, 1);
-
                         }
-
                     }
                 }
             }
@@ -90,16 +94,15 @@ AFND * AFNDTransforma(AFND * afnd) {
                     strcat(e_2, AFNDNombreEstadoEn(afnd, j));
             }
             if (strcmp(e_2, "")) {
-                t = transicionNueva(e_1, AFNDSimboloEn(afnd, i_s), e_2);
-                list_insertLast(transiciones, t);
-                transicionElimina(t);
+                list_insertLast(t_inicio, e_1);
+                list_insertLast(t_simbolo, AFNDSimboloEn(afnd, i_s));
+                list_insertLast(t_fin, e_2);
             }
             /* estado nuevo por insertar */
             if (list_belongs(cis, ci) == FALSE && CIntVacio(ci) == FALSE) {
                 list_insertLast(cis, ci);
                 num_estados_final++;
             }
-
         }
     }
     CIntElimina(ci);
@@ -142,17 +145,20 @@ AFND * AFNDTransforma(AFND * afnd) {
         AFNDInsertaEstado(afd, nombre_estado, tipo);
         CIntElimina(ci_aux);
     }
-
     /* inserto las transiciones en el autómata*/
-    while (list_isEmpty(transiciones) == FALSE) {
-        t = list_extractFirst(transiciones);
-        AFNDInsertaTransicion(afd, transicionInicio(t), transicionSimbolo(t), transicionFin(t));
-        transicionElimina(t);
-
+    while (list_isEmpty(t_inicio) == FALSE) {
+        e_1_aux = list_extractFirst(t_inicio);
+        s_aux = list_extractFirst(t_simbolo);
+        e_2_aux = list_extractFirst(t_fin);
+        AFNDInsertaTransicion(afd, e_1_aux, s_aux, e_2_aux);
+        free(e_1_aux);
+        free(s_aux);
+        free(e_2_aux);
     }
-    list_destroy(transiciones);
     list_destroy(cis);
+    list_destroy(t_inicio);
+    list_destroy(t_simbolo);
+    list_destroy(t_fin);
 
     return afd;
-
 }

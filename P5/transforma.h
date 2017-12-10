@@ -1,8 +1,6 @@
 #ifndef TRANFORMA_H
 #define TRANSFORMA_H
-#include <string.h>
-#include <stdlib.h>
-#include <math.h>
+#include "generic_string.h"
 #include "afnd.h"
 #include "list.h"
 #include "cint.h"

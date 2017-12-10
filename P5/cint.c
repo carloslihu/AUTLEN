@@ -49,24 +49,24 @@ CInt*CIntCopia(CInt*ci) {
     }
     return ci2;
 }
-
+/* Inserta en una posicion el bit deseado */
 int CIntInserta(CInt*ci, int pos, int bit) {
     if (pos >= ci->tam)
         return -1;
     ci->bits[pos] = bit;
     return 0;
 }
-
+/* Devuelve en una posicion el bit deseado */
 int CIntPosBit(CInt*ci, int pos) {
     return ci->bits[pos];
 }
-
+/* Inicializa a 0s todos los bits */
 void CIntInicializa(CInt*ci) {
     int i;
     for (i = 0; i < ci->tam; i++)
         ci->bits[i] = 0;
 }
-
+/* Si todos los bits estan a 0, esta vacio */
 Bool CIntVacio(CInt*ci) {
     int i;
     for (i = 0; i < ci->tam; i++)
