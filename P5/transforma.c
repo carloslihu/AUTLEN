@@ -2,17 +2,23 @@
 
 AFND * AFNDTransforma(AFND * afnd) {
     AFND * afd;
-    List * cis;
-    List* t_inicio, *t_simbolo, *t_fin; /* listas donde guardaré los valores de la transicion
-                                         son listas de char* */
+    List * cis; /*Lista de conjuntos de ints asociados a estados*/
+
+    List* t_inicio, *t_simbolo, *t_fin; /* listas de char* donde guardaré los valores de la transicion,
+                                         * Se insertará en las 3 a la vez cada vez, 
+                                         * por tanto hay una correspondencia de índices implícita
+                                         * entre sus elementos */
+
     CInt*ci_aux, *ci;
     char nombre_estado[50], e_1[50], e_2[50];
+
     int num_estados, num_simbolos, num_estados_final;
     int tipo, tipo_aux;
-    int flag_i = 0, flag_f = 0;
+    int flag_i = 0, flag_f = 0; /*flags para determinar tipos de estado */
     int i, j;
     int i_e1, i_s, i_e2;
     char* e_1_aux, * e_2_aux, *s_aux;
+
     if (!afnd)
         return NULL;
 
@@ -33,14 +39,13 @@ AFND * AFNDTransforma(AFND * afnd) {
             (copy_element_function_type) CIntCopia,
             (print_element_function_type) CIntImprime,
             (cmp_element_function_type) CIntCompara);
-    
+
     num_estados = AFNDNumEstados(afnd);
     num_simbolos = AFNDNumSimbolos(afnd);
 
 
-    /* calcular estado inicial */
+    /* calcular estado inicial en forma de conjunto de bits */
     i = AFNDIndiceEstadoInicial(afnd);
-    tipo = INICIAL;
     ci_aux = CIntNuevo(num_estados);
     CIntInicializa(ci_aux);
     for (j = 0; j < num_estados; j++)
@@ -51,16 +56,17 @@ AFND * AFNDTransforma(AFND * afnd) {
     CIntElimina(ci_aux);
 
 
-    /* calculamos el resto de estados */
+    /* calculamos el resto de estados en forma de conjunto de bits*/
     num_estados_final = 1;
     ci = CIntNuevo(num_estados);
     for (i = 0;; i++) {
+        /*Este es el estado a explorar */
         ci_aux = list_get(cis, i);
         if (ci_aux == NULL)
             break;
 
         for (i_s = 0; i_s < num_simbolos; i_s++) {
-            /* calculamos fila de ints */
+            /* calculamos el conjunto de bits resultado para un símbolo dado*/
             CIntInicializa(ci);
             for (i_e1 = 0; i_e1 < num_estados; i_e1++) {
                 if (CIntPosBit(ci_aux, i_e1) == 1) {
@@ -72,7 +78,9 @@ AFND * AFNDTransforma(AFND * afnd) {
                     }
                 }
             }
-            /* añadimos transiciones lambda */
+
+
+            /* añadimos conjuntos de bits generados por transiciones lambda */
             for (i_e1 = 0; i_e1 < num_estados; i_e1++) {
                 if (CIntPosBit(ci, i_e1) == 1) {
                     for (i_e2 = 0; i_e2 < num_estados; i_e2++) {
@@ -82,7 +90,15 @@ AFND * AFNDTransforma(AFND * afnd) {
                     }
                 }
             }
-            /* inserto transicion nueva no lambda en la lista de transiciones*/
+            /* inserto el estado en la lista si es nuevo */
+            if (list_belongs(cis, ci) == FALSE && CIntVacio(ci) == FALSE) {
+                list_insertLast(cis, ci);
+                num_estados_final++;
+            }
+
+            
+            
+            /* inserto transicion nueva (no lambda) en las listas asociadas a las transiciones */
             strcpy(e_1, "");
             for (j = 0; j < num_estados; j++) {
                 if (CIntPosBit(ci_aux, j) == 1)
@@ -98,25 +114,24 @@ AFND * AFNDTransforma(AFND * afnd) {
                 list_insertLast(t_simbolo, AFNDSimboloEn(afnd, i_s));
                 list_insertLast(t_fin, e_2);
             }
-            /* estado nuevo por insertar */
-            if (list_belongs(cis, ci) == FALSE && CIntVacio(ci) == FALSE) {
-                list_insertLast(cis, ci);
-                num_estados_final++;
-            }
+
         }
     }
     CIntElimina(ci);
 
+    
+    
     /* creo automata determinista */
     afd = AFNDNuevo("determinista", num_estados_final, num_simbolos);
     /* inserto simbolos en autómata*/
     for (i_s = 0; i_s < num_simbolos; i_s++)
         AFNDInsertaSimbolo(afd, AFNDSimboloEn(afnd, i_s));
 
-    /* inserto los estados en el autómata a partir del CInt */
+    /* inserto los estados en el autómata a partir del CInt calculado previamente */
     while (list_isEmpty(cis) == FALSE) {
         ci_aux = list_extractFirst(cis);
         strcpy(nombre_estado, "");
+        /* mediante estos flags, determinaré si algún estado es inicial/final */
         flag_i = 0;
         flag_f = 0;
         for (i_e1 = 0; i_e1 < num_estados; i_e1++) {
@@ -145,6 +160,7 @@ AFND * AFNDTransforma(AFND * afnd) {
         AFNDInsertaEstado(afd, nombre_estado, tipo);
         CIntElimina(ci_aux);
     }
+    
     /* inserto las transiciones en el autómata*/
     while (list_isEmpty(t_inicio) == FALSE) {
         e_1_aux = list_extractFirst(t_inicio);
@@ -155,6 +171,8 @@ AFND * AFNDTransforma(AFND * afnd) {
         free(s_aux);
         free(e_2_aux);
     }
+    
+    /* libero los recursos */
     list_destroy(cis);
     list_destroy(t_inicio);
     list_destroy(t_simbolo);

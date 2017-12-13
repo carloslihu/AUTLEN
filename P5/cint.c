@@ -1,10 +1,15 @@
 #include "cint.h"
 
+/* Estructura para almacenar los estados del AFD
+   un 1 en una posición indica que el estado con el índice asociado
+ igual al de la posición está presente */
 struct _CInt {
-    int tam;
+    int tam; /* tamaño del vector bits */
     int* bits;
 };
 
+
+/* Inicializa la estructura */
 CInt * CIntNuevo(int tam) {
     CInt *ci;
     ci = (CInt*) malloc(sizeof (CInt));
@@ -12,12 +17,12 @@ CInt * CIntNuevo(int tam) {
     ci->bits = (int*) calloc(tam, sizeof (int));
     return ci;
 }
-
+/* Libera la estructura */
 void CIntElimina(CInt* ci) {
     free(ci->bits);
     free(ci);
 }
-
+/* Compara 2 elementos */
 int CIntCompara(CInt*ci1, CInt*ci2) {
     int i;
     if (ci1->tam != ci2->tam)
@@ -29,7 +34,7 @@ int CIntCompara(CInt*ci1, CInt*ci2) {
     return 0;
 
 }
-
+/* Imprime el elemento */
 void CIntImprime(FILE * fd, CInt * ci) {
     int i;
     fprintf(fd, "{ ");
@@ -37,7 +42,7 @@ void CIntImprime(FILE * fd, CInt * ci) {
         fprintf(fd, "%d ", ci->bits[i]);
     fprintf(fd, "}\n");
 }
-
+/* Copia el elemento */
 CInt*CIntCopia(CInt*ci) {
     CInt *ci2;
     int i;
@@ -49,6 +54,7 @@ CInt*CIntCopia(CInt*ci) {
     }
     return ci2;
 }
+
 /* Inserta en una posicion el bit deseado */
 int CIntInserta(CInt*ci, int pos, int bit) {
     if (pos >= ci->tam)
@@ -56,17 +62,20 @@ int CIntInserta(CInt*ci, int pos, int bit) {
     ci->bits[pos] = bit;
     return 0;
 }
-/* Devuelve en una posicion el bit deseado */
+
+/* Devuelve de una posicion el bit deseado */
 int CIntPosBit(CInt*ci, int pos) {
     return ci->bits[pos];
 }
+
 /* Inicializa a 0s todos los bits */
 void CIntInicializa(CInt*ci) {
     int i;
     for (i = 0; i < ci->tam; i++)
         ci->bits[i] = 0;
 }
-/* Si todos los bits estan a 0, esta vacio */
+
+/* Si todos los bits estan a 0, se considera vacio */
 Bool CIntVacio(CInt*ci) {
     int i;
     for (i = 0; i < ci->tam; i++)
