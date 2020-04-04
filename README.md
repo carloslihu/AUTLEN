@@ -1,2 +1,1 @@
-# autlenp
-practicas de AUTLEN
+# Prácticas de Autómatas y Lenguajes
